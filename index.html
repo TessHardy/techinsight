@@ -314,33 +314,59 @@ footer .heart{color:var(--accent-pink)}
 
 /* ========== 真实场景 ========== */
 .scenarios-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;max-width:1280px;margin:0 auto;padding:0 2rem}
-.scenario-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:1.8rem;position:relative;overflow:hidden;transition:all 0.3s}
-.scenario-card:hover{transform:translateY(-4px);border-color:var(--accent-blue);box-shadow:0 12px 30px rgba(59,130,246,0.2)}
-.scenario-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple))}
-.scenario-step{font-size:0.75rem;color:var(--accent-cyan);font-weight:700;letter-spacing:2px;margin-bottom:0.8rem}
-.scenario-pain{background:rgba(239,68,68,0.1);border-left:3px solid #ef4444;padding:0.6rem 0.8rem;border-radius:0 8px 8px 0;font-size:0.85rem;color:#fca5a5;margin-bottom:1rem}
+.scenario-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:1.8rem;position:relative;overflow:hidden;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);opacity:0;transform:translateY(20px)}
+.scenario-card.visible{opacity:1;transform:translateY(0)}
+.scenario-card:hover{transform:translateY(-6px) scale(1.02);border-color:var(--accent-blue);box-shadow:0 12px 30px rgba(59,130,246,0.2)}
+.scenario-card.visible:hover{transform:translateY(-6px) scale(1.02)}
+.scenario-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple),var(--accent-cyan));background-size:200% 100%;animation:scenarioGlow 3s linear infinite}
+@keyframes scenarioGlow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.scenario-step{font-size:0.75rem;color:var(--accent-cyan);font-weight:700;letter-spacing:2px;margin-bottom:0.8rem;display:inline-block;padding:0.3rem 0.7rem;background:rgba(6,182,212,0.1);border-radius:6px;border:1px solid rgba(6,182,212,0.2)}
+.scenario-pain{background:rgba(239,68,68,0.1);border-left:3px solid #ef4444;padding:0.6rem 0.8rem;border-radius:0 8px 8px 0;font-size:0.85rem;color:#fca5a5;margin-bottom:1rem;transition:all 0.3s}
+.scenario-card:hover .scenario-pain{background:rgba(239,68,68,0.15);transform:translateX(4px)}
 [data-theme="light"] .scenario-pain{color:#dc2626;background:rgba(239,68,68,0.05)}
-.scenario-title{font-size:1.2rem;font-weight:700;margin-bottom:0.6rem;color:var(--text-primary)}
+.scenario-title{font-size:1.2rem;font-weight:700;margin-bottom:0.6rem;color:var(--text-primary);transition:color 0.3s}
+.scenario-card:hover .scenario-title{color:var(--accent-blue)}
 .scenario-desc{color:var(--text-secondary);line-height:1.6;font-size:0.9rem;margin-bottom:1.2rem;font-style:italic}
-.scenario-solution{background:rgba(16,185,129,0.05);border-radius:12px;padding:1rem;border:1px dashed rgba(16,185,129,0.3)}
-.solution-step{font-size:0.85rem;font-weight:700;color:var(--accent-green);margin-bottom:0.5rem}
+.scenario-solution{background:rgba(16,185,129,0.05);border-radius:12px;padding:1rem;border:1px dashed rgba(16,185,129,0.3);transition:all 0.3s}
+.scenario-card:hover .scenario-solution{background:rgba(16,185,129,0.08);border-style:solid;border-color:rgba(16,185,129,0.4)}
+.solution-step{font-size:0.85rem;font-weight:700;color:var(--accent-green);margin-bottom:0.5rem;display:flex;align-items:center;gap:0.3rem}
+.solution-step::before{content:'→';font-weight:bold}
 .solution-flow{font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin-bottom:0.6rem;padding-left:1rem;border-left:2px solid var(--accent-green)}
-.solution-result{font-size:0.85rem;color:var(--accent-green);font-weight:600;padding-top:0.5rem;border-top:1px dashed rgba(16,185,129,0.3)}
+.solution-result{font-size:0.85rem;color:var(--accent-green);font-weight:600;padding-top:0.5rem;border-top:1px dashed rgba(16,185,129,0.3);display:flex;align-items:center;gap:0.3rem}
 
 /* ========== 踩坑实战 ========== */
 .pitfalls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1280px;margin:0 auto;padding:0 2rem}
-.pitfall-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:1.5rem;position:relative;transition:all 0.3s}
-.pitfall-card:hover{transform:translateY(-3px);border-color:#f59e0b;box-shadow:0 8px 20px rgba(245,158,11,0.15)}
-.pitfall-icon{font-size:2rem;margin-bottom:0.5rem}
-.pitfall-tag.error{position:absolute;top:1rem;right:1rem;background:rgba(245,158,11,0.15);color:#f59e0b;padding:0.2rem 0.6rem;border-radius:6px;font-size:0.7rem;font-weight:700}
-.pitfall-title{font-size:1.05rem;font-weight:700;margin-bottom:0.8rem;color:var(--text-primary);padding-right:3rem}
-.pitfall-problem,.pitfall-solution,.pitfall-effect{font-size:0.85rem;line-height:1.6;margin-bottom:0.4rem}
+.pitfall-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:1.5rem;position:relative;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);overflow:hidden}
+.pitfall-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#ef4444,#f59e0b);background-size:200% 100%;animation:pitfallGlow 3s linear infinite;opacity:0;transition:opacity 0.3s}
+.pitfall-card:hover::before{opacity:1}
+@keyframes pitfallGlow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.pitfall-card:hover{transform:translateY(-6px) scale(1.02);border-color:#f59e0b;box-shadow:0 12px 30px rgba(245,158,11,0.25)}
+.pitfall-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:0.8rem;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden}
+.pitfall-icon::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,158,11,0.4),rgba(239,68,68,0.4));opacity:0;transition:opacity 0.3s}
+.pitfall-card:hover .pitfall-icon{transform:rotate(15deg) scale(1.1);box-shadow:0 6px 20px rgba(245,158,11,0.4)}
+.pitfall-card:hover .pitfall-icon::before{opacity:1}
+.pitfall-icon span{position:relative;z-index:1;display:inline-block;animation:iconBounce 2s ease-in-out infinite}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.pitfall-card:hover .pitfall-icon span{animation:iconShake 0.5s ease-in-out}
+@keyframes iconShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}
+.pitfall-tag.error{position:absolute;top:1rem;right:1rem;background:rgba(245,158,11,0.15);color:#f59e0b;padding:0.2rem 0.6rem;border-radius:6px;font-size:0.7rem;font-weight:700;transition:all 0.3s}
+.pitfall-card:hover .pitfall-tag.error{background:rgba(245,158,11,0.3);transform:scale(1.05)}
+.pitfall-title{font-size:1.05rem;font-weight:700;margin-bottom:0.8rem;color:var(--text-primary);padding-right:3rem;transition:color 0.3s}
+.pitfall-card:hover .pitfall-title{color:#f59e0b}
+.pitfall-problem,.pitfall-solution,.pitfall-effect{font-size:0.85rem;line-height:1.6;margin-bottom:0.4rem;transition:transform 0.3s}
 .pitfall-problem{color:#fca5a5}
 [data-theme="light"] .pitfall-problem{color:#dc2626}
 .pitfall-solution{color:var(--text-secondary)}
 .pitfall-effect{color:var(--accent-green);font-weight:600}
-.pitfall-card code{background:rgba(0,0,0,0.3);padding:0.1rem 0.4rem;border-radius:4px;font-family:'Fira Code','Consolas',monospace;font-size:0.78rem;color:var(--accent-cyan)}
+.pitfall-card code{background:rgba(0,0,0,0.3);padding:0.1rem 0.4rem;border-radius:4px;font-family:'Fira Code','Consolas',monospace;font-size:0.78rem;color:var(--accent-cyan);transition:all 0.3s}
 [data-theme="light"] .pitfall-card code{background:rgba(0,0,0,0.08);color:#0891b2}
+.pitfall-card:hover code{background:rgba(0,0,0,0.5);color:var(--accent-purple)}
+[data-theme="light"] .pitfall-card:hover code{background:rgba(0,0,0,0.15)}
+
+/* 入场动画 */
+.pitfall-card{opacity:0;transform:translateY(20px)}
+.pitfall-card.visible{opacity:1;transform:translateY(0)}
+.pitfall-card.visible:hover{transform:translateY(-6px) scale(1.02)}
 
 @media(max-width:480px){
   .scenarios-grid,.pitfalls-grid{grid-template-columns:1fr;padding:0 1rem}
@@ -646,7 +672,7 @@ footer .heart{color:var(--accent-pink)}
   <div class="scenarios-grid">
     <div class="scenario-card" data-delay="0">
       <div class="scenario-step">场景 01</div>
-      <div class="scenario-pain">😫 痛点：选框架纠结 3 天</div>
+      <div class="scenario-pain">⚠ 痛点：选框架纠结 3 天</div>
       <h3 class="scenario-title">新项目技术选型</h3>
       <p class="scenario-desc">"下个月要启动一个 ToB 中后台项目，老板让我选 React 还是 Vue。我之前只用过一个框架，没法客观对比。团队 5 个人，2 个会 React、2 个会 Vue、1 个新手。学哪个？"</p>
       <div class="scenario-solution">
@@ -657,7 +683,7 @@ footer .heart{color:var(--accent-pink)}
     </div>
     <div class="scenario-card" data-delay="100">
       <div class="scenario-step">场景 02</div>
-      <div class="scenario-pain">😫 痛点：性能问题找不到原因</div>
+      <div class="scenario-pain">⚠ 痛点：性能问题找不到原因</div>
       <h3 class="scenario-title">老项目性能优化</h3>
       <p class="scenario-desc">"接手了一个 5 年历史的 Angular 项目，首屏加载 8 秒，用户投诉越来越多。领导让我评估要不要重构到 React/Vue，但维护成本是个无底洞。我需要量化证据。"</p>
       <div class="scenario-solution">
@@ -668,7 +694,7 @@ footer .heart{color:var(--accent-pink)}
     </div>
     <div class="scenario-card" data-delay="200">
       <div class="scenario-step">场景 03</div>
-      <div class="scenario-pain">😫 痛点：技术分享没数据支撑</div>
+      <div class="scenario-pain">⚠ 痛点：技术分享没数据支撑</div>
       <h3 class="scenario-title">团队技术分享</h3>
       <p class="scenario-desc">"团队让我做一次技术分享，主题是'为什么我们要用 Svelte'。但只有我一个人的经验，没有量化数据支撑观点，同事们半信半疑。"</p>
       <div class="scenario-solution">
@@ -784,7 +810,7 @@ footer .heart{color:var(--accent-pink)}
   </div>
   <div class="pitfalls-grid">
     <div class="pitfall-card" data-delay="0">
-      <div class="pitfall-icon">🪤</div>
+      <div class="pitfall-icon"><span>⚡</span></div>
       <div class="pitfall-tag error">坑 1</div>
       <h3 class="pitfall-title">ECharts 折线图渲染卡顿</h3>
       <p class="pitfall-problem">❌ 问题：图表数据点超过 50 个时，动画卡顿，hover 出现明显延迟</p>
@@ -792,7 +818,7 @@ footer .heart{color:var(--accent-pink)}
       <p class="pitfall-effect">📈 效果：5000 数据点下依然流畅，hover 响应 &lt;50ms</p>
     </div>
     <div class="pitfall-card" data-delay="100">
-      <div class="pitfall-icon">🪤</div>
+      <div class="pitfall-icon"><span>🎨</span></div>
       <div class="pitfall-tag error">坑 2</div>
       <h3 class="pitfall-title">主题切换时图表颜色不更新</h3>
       <p class="pitfall-problem">❌ 问题：切换深色/浅色主题后，图表文字仍然看不清</p>
@@ -800,7 +826,7 @@ footer .heart{color:var(--accent-pink)}
       <p class="pitfall-effect">📈 效果：主题切换 0 延迟，色彩对比度达 AAA 级</p>
     </div>
     <div class="pitfall-card" data-delay="200">
-      <div class="pitfall-icon">🪤</div>
+      <div class="pitfall-icon"><span>✂️</span></div>
       <div class="pitfall-tag error">坑 3</div>
       <h3 class="pitfall-title">模板字符串中 script 标签被截断</h3>
       <p class="pitfall-problem">❌ 问题：Vue 代码示例中的 <code>&lt;script&gt;</code> 标签让 HTML 解析器认为主 script 结束，导致 JS 语法错误</p>
@@ -808,7 +834,7 @@ footer .heart{color:var(--accent-pink)}
       <p class="pitfall-effect">📈 效果：代码示例 100% 正确显示</p>
     </div>
     <div class="pitfall-card" data-delay="300">
-      <div class="pitfall-icon">🪤</div>
+      <div class="pitfall-icon"><span>🚀</span></div>
       <div class="pitfall-tag error">坑 4</div>
       <h3 class="pitfall-title">GitHub Pages 部署后 404</h3>
       <p class="pitfall-problem">❌ 问题：推送后打开 <code>*.github.io/repo/</code> 一直 404</p>
@@ -816,7 +842,7 @@ footer .heart{color:var(--accent-pink)}
       <p class="pitfall-effect">📈 效果：自动化发布，推送即上线</p>
     </div>
     <div class="pitfall-card" data-delay="400">
-      <div class="pitfall-icon">🪤</div>
+      <div class="pitfall-icon"><span>⚡</span></div>
       <div class="pitfall-tag error">坑 5</div>
       <h3 class="pitfall-title">筛选器联动多个图表的性能</h3>
       <p class="pitfall-problem">❌ 问题：点选 6 个框架时 7 种图表全部重绘，明显卡顿</p>
@@ -824,7 +850,7 @@ footer .heart{color:var(--accent-pink)}
       <p class="pitfall-effect">📈 效果：筛选响应 &lt;16ms，达到 60fps</p>
     </div>
     <div class="pitfall-card" data-delay="500">
-      <div class="pitfall-icon">🪤</div>
+      <div class="pitfall-icon"><span>🤖</span></div>
       <div class="pitfall-tag error">坑 6</div>
       <h3 class="pitfall-title">AI 助手首次加载慢</h3>
       <p class="pitfall-problem">❌ 问题：AI 知识库数据量大，首屏加载占用 200ms+</p>
@@ -1235,7 +1261,7 @@ function exportReport(){
   printWindow.document.write('.chart-tag,.chart-click-hint{display:none}');
   printWindow.document.write('.time-range-bar,.filter-bar,.export-btn,.score-btn{display:none}');
   printWindow.document.write('.chart-container{height:280px}');
-  printWindow.document.write('.case-card,.feature-card,.scenario-card,.pitfall-card{background:#fff;border:1px solid #e5e7eb;padding:15px;margin:10px 0;border-radius:8px;page-break-inside:avoid}');
+  printWindow.document.write('.case-card,.feature-card,.scenario-card,.pitfall-card{background:#fff;border:1px solid #e5e7eb;padding:15px;margin:10px 0;border-radius:8px;page-break-inside:avoid;opacity:1!important;transform:none!important}');
   printWindow.document.write('.case-desc,.feature-desc,.scenario-desc,.pitfall-solution{color:#64748b}');
   printWindow.document.write('.case-metric{background:#e0f2fe;color:#0369a1;padding:4px 8px;border-radius:4px;font-size:0.8rem}');
   printWindow.document.write('.scenario-pain{background:#fee2e2;color:#991b1b;padding:8px;border-radius:6px;font-size:0.85rem}');
@@ -1245,7 +1271,10 @@ function exportReport(){
   printWindow.document.write('.pitfall-problem{color:#dc2626}');
   printWindow.document.write('.pitfall-effect{color:#047857;font-weight:bold}');
   printWindow.document.write('.pitfall-card code{background:#f3f4f6;padding:1px 4px;border-radius:3px;font-family:monospace}');
-  printWindow.document.write('.scenario-step{color:#06b6d4;font-weight:bold;font-size:0.75rem}');
+  printWindow.document.write('.scenario-step{color:#06b6d4;font-weight:bold;font-size:0.75rem;background:#ecfeff;padding:4px 8px;border-radius:4px;display:inline-block}');
+  printWindow.document.write('.pitfall-icon{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;background:#fef3c7;font-size:1.2rem;margin-bottom:8px}');
+  printWindow.document.write('.pitfall-icon span{font-size:1.2rem}');
+  printWindow.document.write('.pitfall-card::before{display:none}');
   printWindow.document.write('.footer{text-align:center;color:#64748b;padding:20px;border-top:1px solid #e5e7eb}');
   printWindow.document.write('h1,h2,h3{color:#1e293b}');
   printWindow.document.write('@media print{.chart-card,.stat-card,.case-card,.feature-card{page-break-inside:avoid}}');
@@ -1734,7 +1763,7 @@ function sendAiMessage(){
       }
     });
   },{threshold:0.1});
-  document.querySelectorAll('.chart-card,.feature-card,.case-card').forEach(function(card){observer.observe(card)});
+  document.querySelectorAll('.chart-card,.feature-card,.case-card,.scenario-card,.pitfall-card').forEach(function(card){observer.observe(card)});
 })();
 
 /* ========== ECharts 图表 ========== */
