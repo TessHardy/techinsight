@@ -302,7 +302,7 @@ footer .heart{color:var(--accent-pink)}
 .data-flow{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,rgba(10,14,23,0.95),transparent);overflow:hidden;z-index:1}
 [data-theme="light"] .data-flow{background:linear-gradient(to top,rgba(248,250,252,0.95),transparent)}
 .data-flow-track{display:flex;gap:1rem;animation:dataFlowScroll 30s linear infinite;white-space:nowrap;padding:0.5rem 0}
-@keyframes dataFlowScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}
+@keyframes dataFlowScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .data-item{display:flex;align-items:center;gap:0.3rem;padding:0.3rem 0.8rem;border-radius:20px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);font-size:0.75rem;color:var(--accent-blue)}
 .data-item.green{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.2);color:var(--accent-green)}
 .data-item.purple{background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:var(--accent-purple)}
@@ -886,13 +886,13 @@ export default Counter;`
   </div>
 </template>
 
-<script setup>
+\x3Cscript setup>
 import { ref } from 'vue';
 
 const count = ref(0);
 const increment = () => count.value++;
 const decrement = () => count.value--;
-</script>`
+\x3C/script>`
   },
   Angular:{
     title:'Angular 组件示例',
@@ -919,9 +919,9 @@ export class CounterComponent {
   Svelte:{
     title:'Svelte 组件示例',
     lang:'svelte',
-    code:`<script>
+    code:`\x3Cscript>
   let count = 0;
-</script>
+\x3C/script>
 
 <div class="counter">
   <h1>计数器: {count}</h1>
@@ -968,7 +968,7 @@ export default function Home() {
   </div>
 </template>
 
-<script setup>
+\x3Cscript setup>
 import { ref } from 'vue';
 
 const data = ref(null);
@@ -977,7 +977,7 @@ const fetchData = async () => {
   const res = await useFetch('/api/data');
   data.value = res.data.value;
 };
-</script>`
+\x3C/script>`
   }
 };
 
@@ -1222,7 +1222,9 @@ function showCodeExample(fw){
   
   document.getElementById('codeTitle').textContent=template.title;
   document.getElementById('codeLang').textContent=template.lang;
-  document.getElementById('codeContent').textContent=template.code;
+  // 将转义字符转换回原始字符用于显示
+  var displayCode=template.code.replace(/\\x3C/g,'<');
+  document.getElementById('codeContent').textContent=displayCode;
   document.getElementById('codeCopyBtn').textContent='📋 一键复制代码';
   document.getElementById('codeCopyBtn').classList.remove('copied');
   document.getElementById('codeModal').classList.add('active');
@@ -1241,6 +1243,8 @@ function copyCode(){
       document.getElementById('codeCopyBtn').textContent='📋 一键复制代码';
       document.getElementById('codeCopyBtn').classList.remove('copied');
     },2000);
+  }).catch(function(err){
+    alert('复制失败，请手动复制');
   });
 }
 
