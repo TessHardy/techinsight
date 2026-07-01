@@ -384,6 +384,107 @@ footer .heart{color:var(--accent-pink)}
   .pitfall-title{padding-right:0;margin-top:0.5rem}
   .pitfall-tag.error{position:static;display:inline-block;margin-bottom:0.5rem}
 }
+
+/* ========== PK 擂台 ========== */
+.pk-container{background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;padding:2rem;max-width:1000px;margin:0 auto;position:relative;overflow:hidden}
+.pk-container::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#ef4444 0%,#fbbf24 50%,#3b82f6 100%)}
+.pk-title{text-align:center;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem}
+.pk-subtitle{text-align:center;color:var(--text-secondary);margin-bottom:2rem;font-size:0.9rem}
+.pk-arena{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;margin-bottom:1.5rem}
+.pk-side{padding:1.5rem;border-radius:16px;text-align:center;transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden}
+.pk-side.red{background:linear-gradient(135deg,rgba(239,68,68,0.1),rgba(239,68,68,0.02));border:2px solid rgba(239,68,68,0.3)}
+.pk-side.blue{background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(59,130,246,0.02));border:2px solid rgba(59,130,246,0.3)}
+.pk-side:hover{transform:scale(1.03)}
+.pk-side.red:hover{border-color:#ef4444;box-shadow:0 8px 30px rgba(239,68,68,0.3)}
+.pk-side.blue:hover{border-color:#3b82f6;box-shadow:0 8px 30px rgba(59,130,246,0.3)}
+.pk-side.winner{animation:pkWin 0.6s ease;transform:scale(1.05)}
+@keyframes pkWin{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1.05)}}
+.pk-side.winner::after{content:'👑';position:absolute;top:-10px;right:-10px;font-size:2rem;animation:pkCrown 1s ease infinite}
+@keyframes pkCrown{0%,100%{transform:rotate(0)}50%{transform:rotate(20deg)}}
+.pk-emoji{font-size:3rem;margin-bottom:0.5rem}
+.pk-name{font-size:1.2rem;font-weight:700;margin-bottom:0.8rem}
+.pk-score{font-size:2.5rem;font-weight:800;background:linear-gradient(135deg,#ef4444,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pk-side.blue .pk-score{background:linear-gradient(135deg,#3b82f6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pk-stats{font-size:0.8rem;color:var(--text-secondary);margin-top:0.5rem}
+.pk-vs{font-size:2.5rem;font-weight:800;color:#fbbf24;text-align:center;position:relative;display:flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:50%;background:rgba(251,191,36,0.1);border:2px dashed #fbbf24;animation:pkVSPulse 2s ease infinite}
+@keyframes pkVSPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.pk-dimensions{margin-top:1.5rem}
+.pk-dim{display:flex;align-items:center;gap:1rem;margin-bottom:0.6rem;font-size:0.9rem}
+.pk-dim-label{width:80px;color:var(--text-secondary);font-weight:600}
+.pk-dim-bar{flex:1;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;position:relative;overflow:hidden}
+.pk-dim-fill{position:absolute;top:0;height:100%;border-radius:4px;transition:width 1s ease}
+.pk-dim-fill.red{background:linear-gradient(90deg,#ef4444,#f87171);right:50%}
+.pk-dim-fill.blue{background:linear-gradient(90deg,#3b82f6,#60a5fa);left:50%}
+.pk-dim-value{width:60px;text-align:center;font-weight:700}
+.pk-controls{text-align:center;margin-top:1.5rem}
+.pk-btn{padding:0.6rem 1.5rem;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;border:none;cursor:pointer;font-size:0.9rem;font-weight:600;margin:0 0.3rem;transition:all 0.2s}
+.pk-btn:hover{transform:scale(1.05)}
+.pk-btn.secondary{background:rgba(255,255,255,0.1)}
+
+/* ========== 运势占卜 ========== */
+.fortune-container{background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(236,72,153,0.1));border:1px solid rgba(139,92,246,0.3);border-radius:20px;padding:2.5rem 2rem;text-align:center;max-width:600px;margin:0 auto;position:relative;overflow:hidden}
+.fortune-container::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent 0deg,rgba(139,92,246,0.05) 60deg,transparent 120deg);animation:fortuneRotate 10s linear infinite}
+@keyframes fortuneRotate{to{transform:rotate(360deg)}}
+.fortune-icon{font-size:4rem;margin-bottom:1rem;position:relative;z-index:1;animation:fortuneFloat 3s ease-in-out infinite}
+@keyframes fortuneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.fortune-title{font-size:1.8rem;font-weight:800;margin-bottom:0.5rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1}
+.fortune-result{font-size:1.2rem;font-weight:600;margin:1rem 0;position:relative;z-index:1;color:var(--text-primary)}
+.fortune-desc{color:var(--text-secondary);line-height:1.7;margin-bottom:1.5rem;position:relative;z-index:1;font-size:0.9rem}
+.fortune-lucky{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin:1.5rem 0;position:relative;z-index:1}
+.fortune-lucky-item{padding:0.6rem;background:rgba(139,92,246,0.1);border-radius:10px;font-size:0.8rem}
+.fortune-lucky-item strong{display:block;color:var(--accent-purple);font-size:1rem;margin-bottom:0.2rem}
+.fortune-btn{padding:0.8rem 2rem;border-radius:30px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border:none;cursor:pointer;font-size:1rem;font-weight:700;position:relative;z-index:1;transition:all 0.3s;box-shadow:0 4px 20px rgba(139,92,246,0.4)}
+.fortune-btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 6px 30px rgba(139,92,246,0.6)}
+
+/* ========== 学习路径 ========== */
+.roadmap-container{background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;padding:2rem;max-width:900px;margin:0 auto}
+.roadmap-quiz{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.8rem;margin:1.5rem 0}
+.quiz-option{padding:1rem;background:rgba(255,255,255,0.05);border:1px solid var(--border-color);border-radius:12px;cursor:pointer;text-align:center;transition:all 0.3s;font-size:0.85rem}
+.quiz-option:hover{border-color:var(--accent-blue);background:rgba(59,130,246,0.1);transform:translateY(-2px)}
+.quiz-option.selected{background:rgba(16,185,129,0.2);border-color:var(--accent-green);color:var(--accent-green)}
+.quiz-emoji{font-size:1.8rem;display:block;margin-bottom:0.3rem}
+.roadmap-result{margin-top:2rem;display:none}
+.roadmap-result.visible{display:block;animation:roadmapIn 0.5s ease}
+@keyframes roadmapIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.roadmap-path{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;padding:1rem;background:rgba(59,130,246,0.05);border-radius:12px;margin:1rem 0}
+.roadmap-node{padding:0.5rem 1rem;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));color:#fff;border-radius:20px;font-size:0.85rem;font-weight:600;box-shadow:0 2px 8px rgba(59,130,246,0.3)}
+.roadmap-arrow{color:var(--accent-cyan);font-size:1.2rem}
+.roadmap-tips{background:rgba(245,158,11,0.05);border-left:3px solid #f59e0b;padding:1rem;border-radius:0 8px 8px 0;margin-top:1rem;font-size:0.85rem;line-height:1.7}
+
+/* ========== 就业市场 ========== */
+.job-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}
+.job-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:1.5rem;transition:all 0.3s;position:relative;overflow:hidden}
+.job-card:hover{transform:translateY(-4px);border-color:var(--accent-green);box-shadow:0 8px 20px rgba(16,185,129,0.15)}
+.job-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem}
+.job-avatar{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;font-weight:700}
+.job-title{font-size:1.1rem;font-weight:700;margin-bottom:0.2rem}
+.job-salary{font-size:1.5rem;font-weight:800;color:var(--accent-green);margin:0.5rem 0}
+.job-salary small{font-size:0.7rem;color:var(--text-secondary);font-weight:400}
+.job-tags{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.8rem}
+.job-tag{padding:0.2rem 0.5rem;background:rgba(59,130,246,0.1);color:var(--accent-blue);border-radius:6px;font-size:0.7rem}
+.job-meta{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-secondary);margin-top:0.8rem;padding-top:0.8rem;border-top:1px solid var(--border-color)}
+.job-trend{display:inline-block;padding:0.1rem 0.4rem;background:rgba(16,185,129,0.1);color:var(--accent-green);border-radius:4px;font-size:0.7rem;font-weight:600}
+.job-trend.down{background:rgba(239,68,68,0.1);color:#ef4444}
+
+/* ========== 开发者地图 ========== */
+.world-map{position:relative;width:100%;max-width:900px;margin:0 auto;aspect-ratio:2/1;background:radial-gradient(ellipse at center,rgba(59,130,246,0.1),transparent 70%);border-radius:20px;overflow:hidden;border:1px solid var(--border-color)}
+.map-svg{width:100%;height:100%;display:block}
+.map-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle,#3b82f6 0%,transparent 70%);transform:translate(-50%,-50%);animation:mapDot 2s ease infinite;cursor:pointer}
+@keyframes mapDot{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.6}50%{transform:translate(-50%,-50%) scale(2);opacity:1}}
+.map-label{position:absolute;font-size:0.7rem;color:var(--text-primary);background:rgba(0,0,0,0.7);padding:2px 6px;border-radius:4px;transform:translate(-50%,-150%);white-space:nowrap;backdrop-filter:blur(10px)}
+.map-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:900px;margin:2rem auto 0}
+.map-stat{text-align:center;padding:1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;transition:all 0.3s}
+.map-stat:hover{border-color:var(--accent-blue);transform:translateY(-2px)}
+.map-stat-num{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.map-stat-label{font-size:0.8rem;color:var(--text-secondary);margin-top:0.3rem}
+
+@media(max-width:768px){
+  .pk-arena{grid-template-columns:1fr;gap:0.8rem}
+  .pk-vs{order:0;margin:0 auto}
+  .fortune-lucky{grid-template-columns:1fr}
+  .map-stats{grid-template-columns:repeat(2,1fr)}
+  .roadmap-quiz{grid-template-columns:repeat(2,1fr)}
+}
 @media print{
   nav,.ai-fab,.back-to-top,.ai-panel,.guide-overlay,.loading-overlay,.chart-modal,.score-modal,.code-modal,.data-flow,.scroll-indicator,.filter-bar,.export-btn,.score-btn{display:none!important}
   body{background:#fff;color:#1e293b}
@@ -492,6 +593,11 @@ footer .heart{color:var(--accent-pink)}
     <li><a href="#charts">分析</a></li>
     <li><a href="#scenarios">场景</a></li>
     <li><a href="#cases">案例</a></li>
+    <li><a href="#pk-arena">PK</a></li>
+    <li><a href="#fortune">运势</a></li>
+    <li><a href="#roadmap">路径</a></li>
+    <li><a href="#jobs">就业</a></li>
+    <li><a href="#worldmap">地图</a></li>
     <li><a href="#pitfalls">实战</a></li>
   </ul>
   <div class="nav-right">
@@ -670,6 +776,164 @@ footer .heart{color:var(--accent-pink)}
         <span class="chart-tag heatmap">热力</span>
       </div>
       <div class="chart-container" id="chart-heatmap"></div>
+    </div>
+  </div>
+</section>
+
+<section id="pk-arena">
+  <div class="section-header">
+    <div class="section-tag">互动游戏</div>
+    <h2 class="section-title">🎮 框架 PK 擂台</h2>
+    <p class="section-desc">选两个框架来 PK，看看谁才是真正的王者？</p>
+  </div>
+  <div class="pk-container">
+    <div class="pk-title">⚔️ 巅峰对决 ⚔️</div>
+    <div class="pk-subtitle">6 维度全方位对比，看看谁更胜一筹</div>
+    <div class="pk-arena">
+      <div class="pk-side red" id="pkRed" onclick="pkSelectSide('red')">
+        <div class="pk-emoji">🔴</div>
+        <div class="pk-name" id="pkRedName">React</div>
+        <div class="pk-score" id="pkRedScore">0</div>
+        <div class="pk-stats" id="pkRedStats">综合评分</div>
+      </div>
+      <div class="pk-vs">VS</div>
+      <div class="pk-side blue" id="pkBlue" onclick="pkSelectSide('blue')">
+        <div class="pk-emoji">🔵</div>
+        <div class="pk-name" id="pkBlueName">Vue</div>
+        <div class="pk-score" id="pkBlueScore">0</div>
+        <div class="pk-stats" id="pkBlueStats">综合评分</div>
+      </div>
+    </div>
+    <div class="pk-dimensions" id="pkDimensions"></div>
+    <div class="pk-controls">
+      <button class="pk-btn" onclick="pkRandom()">🎲 随机 PK</button>
+      <button class="pk-btn secondary" onclick="pkReset()">🔄 重置</button>
+      <select id="pkSelectRed" onchange="pkChangeFw('red',this.value)" style="padding:0.5rem 1rem;border-radius:8px;background:rgba(255,255,255,0.1);color:var(--text-primary);border:1px solid var(--border-color);margin:0 0.3rem">
+        <option value="React">🔴 React</option>
+        <option value="Vue">🔴 Vue</option>
+        <option value="Angular">🔴 Angular</option>
+        <option value="Svelte">🔴 Svelte</option>
+        <option value="Next.js">🔴 Next.js</option>
+        <option value="Nuxt">🔴 Nuxt</option>
+      </select>
+      <span style="color:#fbbf24;font-weight:700">VS</span>
+      <select id="pkSelectBlue" onchange="pkChangeFw('blue',this.value)" style="padding:0.5rem 1rem;border-radius:8px;background:rgba(255,255,255,0.1);color:var(--text-primary);border:1px solid var(--border-color);margin:0 0.3rem">
+        <option value="Vue">🔵 Vue</option>
+        <option value="React">🔵 React</option>
+        <option value="Angular">🔵 Angular</option>
+        <option value="Svelte">🔵 Svelte</option>
+        <option value="Next.js">🔵 Next.js</option>
+        <option value="Nuxt">🔵 Nuxt</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<section id="fortune">
+  <div class="section-header">
+    <div class="section-tag">趣味玩法</div>
+    <h2 class="section-title">🔮 今日框架运势</h2>
+    <p class="section-desc">神秘算法为你揭示今天最适合你的前端框架</p>
+  </div>
+  <div class="fortune-container">
+    <div class="fortune-icon" id="fortuneIcon">🎴</div>
+    <div class="fortune-title" id="fortuneTitle">点击下方按钮，揭开你的今日运势</div>
+    <div class="fortune-result" id="fortuneResult" style="display:none"></div>
+    <div class="fortune-desc" id="fortuneDesc" style="display:none"></div>
+    <div class="fortune-lucky" id="fortuneLucky" style="display:none"></div>
+    <button class="fortune-btn" onclick="tellFortune()">🔮 开始占卜</button>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="section-header">
+    <div class="section-tag">智能推荐</div>
+    <h2 class="section-title">🗺️ 我的学习路径</h2>
+    <p class="section-desc">回答 3 个问题，AI 为你定制专属学习路径</p>
+  </div>
+  <div class="roadmap-container">
+    <h3 style="margin-bottom:0.5rem;font-size:1.1rem">📝 问题 1：你的基础水平？</h3>
+    <div class="roadmap-quiz" id="quizLevel">
+      <div class="quiz-option" data-value="beginner" onclick="selectQuiz(this,'level')"><span class="quiz-emoji">🌱</span>零基础</div>
+      <div class="quiz-option" data-value="junior" onclick="selectQuiz(this,'level')"><span class="quiz-emoji">🌿</span>入门（会 HTML/CSS/JS）</div>
+      <div class="quiz-option" data-value="mid" onclick="selectQuiz(this,'level')"><span class="quiz-emoji">🌳</span>中级（用过框架）</div>
+      <div class="quiz-option" data-value="senior" onclick="selectQuiz(this,'level')"><span class="quiz-emoji">🏔️</span>高级（资深开发）</div>
+    </div>
+    <h3 style="margin:1.5rem 0 0.5rem;font-size:1.1rem">🎯 问题 2：你的目标？</h3>
+    <div class="roadmap-quiz" id="quizGoal">
+      <div class="quiz-option" data-value="job" onclick="selectQuiz(this,'goal')"><span class="quiz-emoji">💼</span>找工作</div>
+      <div class="quiz-option" data-value="startup" onclick="selectQuiz(this,'goal')"><span class="quiz-emoji">🚀</span>做副业</div>
+      <div class="quiz-option" data-value="promotion" onclick="selectQuiz(this,'goal')"><span class="quiz-emoji">📈</span>升职加薪</div>
+      <div class="quiz-option" data-value="interest" onclick="selectQuiz(this,'goal')"><span class="quiz-emoji">❤️</span>纯兴趣</div>
+    </div>
+    <h3 style="margin:1.5rem 0 0.5rem;font-size:1.1rem">⏰ 问题 3：每周可投入时间？</h3>
+    <div class="roadmap-quiz" id="quizTime">
+      <div class="quiz-option" data-value="5h" onclick="selectQuiz(this,'time')"><span class="quiz-emoji">⏱️</span>5 小时以下</div>
+      <div class="quiz-option" data-value="10h" onclick="selectQuiz(this,'time')"><span class="quiz-emoji">⏰</span>5-10 小时</div>
+      <div class="quiz-option" data-value="20h" onclick="selectQuiz(this,'time')"><span class="quiz-emoji">⏳</span>10-20 小时</div>
+      <div class="quiz-option" data-value="fulltime" onclick="selectQuiz(this,'time')"><span class="quiz-emoji">🌟</span>20 小时以上</div>
+    </div>
+    <div class="roadmap-result" id="roadmapResult">
+      <h3 style="font-size:1.3rem;margin-bottom:0.8rem">🎉 你的专属学习路径</h3>
+      <div class="roadmap-path" id="roadmapPath"></div>
+      <div class="roadmap-tips" id="roadmapTips"></div>
+    </div>
+  </div>
+</section>
+
+<section id="jobs">
+  <div class="section-header">
+    <div class="section-tag">就业市场</div>
+    <h2 class="section-title">💼 薪资 & 就业分析</h2>
+    <p class="section-desc">不同框架在国内一线城市的真实薪资和招聘需求</p>
+  </div>
+  <div class="job-grid" id="jobGrid"></div>
+</section>
+
+<section id="worldmap">
+  <div class="section-header">
+    <div class="section-tag">全球视野</div>
+    <h2 class="section-title">🌍 全球开发者地图</h2>
+    <p class="section-desc">看看世界各地的前端开发者都在用什么框架</p>
+  </div>
+  <div class="world-map" id="worldMap">
+    <svg class="map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="oceanGrad">
+          <stop offset="0%" stop-color="rgba(59,130,246,0.05)"/>
+          <stop offset="100%" stop-color="rgba(10,14,23,0)"/>
+        </radialGradient>
+      </defs>
+      <rect width="1000" height="500" fill="url(#oceanGrad)"/>
+      <text x="200" y="220" font-size="60" opacity="0.3" fill="currentColor">🌎</text>
+      <text x="500" y="220" font-size="60" opacity="0.3" fill="currentColor">🌍</text>
+      <text x="800" y="220" font-size="60" opacity="0.3" fill="currentColor">🌏</text>
+      <g stroke="rgba(59,130,246,0.2)" stroke-width="0.5" fill="none">
+        <line x1="0" y1="125" x2="1000" y2="125"/>
+        <line x1="0" y1="250" x2="1000" y2="250"/>
+        <line x1="0" y1="375" x2="1000" y2="375"/>
+        <line x1="250" y1="0" x2="250" y2="500"/>
+        <line x1="500" y1="0" x2="500" y2="500"/>
+        <line x1="750" y1="0" x2="750" y2="500"/>
+      </g>
+    </svg>
+  </div>
+  <div class="map-stats">
+    <div class="map-stat">
+      <div class="map-stat-num">4280万</div>
+      <div class="map-stat-label">全球前端开发者</div>
+    </div>
+    <div class="map-stat">
+      <div class="map-stat-num">800万</div>
+      <div class="map-stat-label">中国开发者</div>
+    </div>
+    <div class="map-stat">
+      <div class="map-stat-num">220+</div>
+      <div class="map-stat-label">国家和地区</div>
+    </div>
+    <div class="map-stat">
+      <div class="map-stat-num">156+</div>
+      <div class="map-stat-label">主流框架</div>
     </div>
   </div>
 </section>
@@ -1753,6 +2017,289 @@ function scrollToTop(){
     if(window.scrollY>400){btn.classList.add('visible')}else{btn.classList.remove('visible')}
   });
 })();
+
+/* ========== 框架数据（PK/运势/学习路径共用） ========== */
+var frameworkData={
+  'React':{emoji:'⚛️',scores:{性能:85,生态:98,易学:75,就业:95,趋势:88,社区:96},salary:25,demand:95,trend:5,color:'#61dafb'},
+  'Vue':{emoji:'💚',scores:{性能:80,生态:90,易学:92,就业:88,趋势:85,社区:88},salary:22,demand:90,trend:8,color:'#42b883'},
+  'Angular':{emoji:'🅰️',scores:{性能:75,生态:85,易学:55,就业:80,趋势:60,社区:82},salary:23,demand:70,trend:-2,color:'#dd0031'},
+  'Svelte':{emoji:'🔥',scores:{性能:95,生态:65,易学:90,就业:60,趋势:92,社区:75},salary:20,demand:55,trend:25,color:'#ff3e00'},
+  'Next.js':{emoji:'▲',scores:{性能:88,生态:95,易学:78,就业:92,趋势:93,社区:90},salary:28,demand:88,trend:18,color:'#000000'},
+  'Nuxt':{emoji:'💎',scores:{性能:85,生态:80,易学:88,就业:75,趋势:82,社区:80},salary:24,demand:65,trend:12,color:'#00dc82'}
+};
+
+/* ========== PK 擂台 ========== */
+var pkState={red:'React',blue:'Vue'};
+var pkDimKeys=['性能','生态','易学','就业','趋势','社区'];
+
+function pkChangeFw(side,fw){
+  pkState[side]=fw;
+  pkRender();
+}
+
+function pkSelectSide(side){
+  var el=document.getElementById(side==='red'?'pkRed':'pkBlue');
+  el.style.transform='scale(0.95)';
+  setTimeout(function(){el.style.transform=''},200);
+}
+
+function pkRender(){
+  var red=frameworkData[pkState.red];
+  var blue=frameworkData[pkState.blue];
+  document.getElementById('pkRedName').innerHTML=red.emoji+' '+pkState.red;
+  document.getElementById('pkBlueName').innerHTML=blue.emoji+' '+pkState.blue;
+  var redTotal=0,blueTotal=0;
+  pkDimKeys.forEach(function(k){
+    redTotal+=red.scores[k];
+    blueTotal+=blue.scores[k];
+  });
+  redTotal=Math.round(redTotal/pkDimKeys.length);
+  blueTotal=Math.round(blueTotal/pkDimKeys.length);
+  document.getElementById('pkRedScore').textContent=redTotal;
+  document.getElementById('pkBlueScore').textContent=blueTotal;
+  document.getElementById('pkRedStats').textContent='综合评分 '+redTotal+' 分';
+  document.getElementById('pkBlueStats').textContent='综合评分 '+blueTotal+' 分';
+
+  var dimsEl=document.getElementById('pkDimensions');
+  dimsEl.innerHTML='';
+  pkDimKeys.forEach(function(k){
+    var row=document.createElement('div');
+    row.className='pk-dim';
+    var r=red.scores[k],b=blue.scores[k];
+    var max=100;
+    var rW=Math.max(0,(r-b)/2/max*100+50);
+    var bW=Math.max(0,(b-r)/2/max*100+50);
+    if(r>=b){
+      rW=50+(r-b)/2;
+      bW=50-(r-b)/2;
+    }else{
+      rW=50-(b-r)/2;
+      bW=50+(b-r)/2;
+    }
+    row.innerHTML='<div class="pk-dim-label">'+k+'</div>'+
+      '<div class="pk-dim-bar">'+
+        '<div class="pk-dim-fill red" style="width:'+Math.max(0,rW)+'%"></div>'+
+        '<div class="pk-dim-fill blue" style="width:'+Math.max(0,bW)+'%"></div>'+
+      '</div>'+
+      '<div class="pk-dim-value"><span style="color:#ef4444">'+r+'</span> : <span style="color:#3b82f6">'+b+'</span></div>';
+    dimsEl.appendChild(row);
+  });
+
+  document.getElementById('pkRed').classList.remove('winner');
+  document.getElementById('pkBlue').classList.remove('winner');
+  setTimeout(function(){
+    if(redTotal>blueTotal)document.getElementById('pkRed').classList.add('winner');
+    else if(blueTotal>redTotal)document.getElementById('pkBlue').classList.add('winner');
+  },300);
+}
+
+function pkRandom(){
+  var keys=Object.keys(frameworkData);
+  var r=keys[Math.floor(Math.random()*keys.length)];
+  var b;
+  do{b=keys[Math.floor(Math.random()*keys.length)]}while(b===r);
+  pkState.red=r;
+  pkState.blue=b;
+  document.getElementById('pkSelectRed').value=r;
+  document.getElementById('pkSelectBlue').value=b;
+  pkRender();
+}
+
+function pkReset(){
+  pkState={red:'React',blue:'Vue'};
+  document.getElementById('pkSelectRed').value='React';
+  document.getElementById('pkSelectBlue').value='Vue';
+  pkRender();
+}
+
+/* ========== 今日运势 ========== */
+var fortunePool=[
+  {fw:'React',icon:'⚛️',desc:'今日宜：组件化思维大爆发！重构老项目正当时，不宜：纠结于是否要重新写整个项目。',lucky:{color:'蓝色',number:'7',food:'咖啡'}},
+  {fw:'Vue',icon:'💚',desc:'今日宜：尝试新特性，Composition API 让你如虎添翼。不宜：和 React 党争论谁更好。',lucky:{color:'绿色',number:'3',food:'奶茶'}},
+  {fw:'Angular',icon:'🅰️',desc:'今日宜：写企业级代码，TS 让你更安心。不宜：尝试用 JS 写 Angular。',lucky:{color:'红色',number:'9',food:'麻辣烫'}},
+  {fw:'Svelte',icon:'🔥',desc:'今日宜：尝试新范式，编译时魔法让你惊叹。不宜：和老板解释为啥不用 React。',lucky:{color:'橙色',number:'5',food:'火锅'}},
+  {fw:'Next.js',icon:'▲',desc:'今日宜：折腾 SSR 和 ISR，性能飞升！不宜：和 SEO 较劲。',lucky:{color:'黑色',number:'13',food:'披萨'}},
+  {fw:'Nuxt',icon:'💎',desc:'今日宜：优雅地写 Vue，全栈开发更轻松。不宜：忘记装 nitro。',lucky:{color:'翡翠绿',number:'8',food:'寿司'}}
+];
+
+function tellFortune(){
+  var icon=document.getElementById('fortuneIcon');
+  var result=document.getElementById('fortuneResult');
+  var desc=document.getElementById('fortuneDesc');
+  var lucky=document.getElementById('fortuneLucky');
+  var title=document.getElementById('fortuneTitle');
+
+  title.style.display='none';
+  result.style.display='block';
+  desc.style.display='block';
+  lucky.style.display='grid';
+
+  icon.textContent='🎲';
+  icon.style.animation='pkVSPulse 0.3s ease infinite';
+  result.innerHTML='<span style="opacity:0.5">🔮 神秘力量正在觉醒...</span>';
+  desc.textContent='';
+  lucky.innerHTML='';
+
+  setTimeout(function(){
+    var f=fortunePool[Math.floor(Math.random()*fortunePool.length)];
+    icon.textContent=f.icon;
+    icon.style.animation='fortuneFloat 3s ease-in-out infinite';
+    result.innerHTML='今日你的本命框架是 <strong style="background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.5rem">'+f.fw+'</strong>';
+    desc.textContent=f.desc;
+    lucky.innerHTML='<div class="fortune-lucky-item"><strong>幸运色</strong>'+f.lucky.color+'</div>'+
+      '<div class="fortune-lucky-item"><strong>幸运数字</strong>'+f.lucky.number+'</div>'+
+      '<div class="fortune-lucky-item"><strong>开运美食</strong>'+f.lucky.food+'</div>';
+  },1500);
+}
+
+/* ========== 学习路径规划器 ========== */
+var quizAnswers={level:null,goal:null,time:null};
+
+function selectQuiz(el,key){
+  var parent=el.parentElement;
+  parent.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('selected')});
+  el.classList.add('selected');
+  quizAnswers[key]=el.getAttribute('data-value');
+  if(quizAnswers.level && quizAnswers.goal && quizAnswers.time){
+    setTimeout(generateRoadmap,300);
+  }
+}
+
+function generateRoadmap(){
+  var paths={
+    beginner:{name:'零基础',base:['HTML 基础','CSS 基础','JavaScript 语法','开发环境搭建']},
+    junior:{name:'入门',base:['ES6+ 语法','DOM/BOM 编程','Git 版本控制','包管理工具 (npm/yarn)']},
+    mid:{name:'中级',base:['TypeScript 入门','设计模式','性能优化基础','Webpack/Vite 配置']},
+    senior:{name:'高级',base:['架构设计','微前端','构建工具链','自动化测试']}
+  };
+  var fws={
+    job:['Vue 3 (国内需求大)','React (生态完善)','组件库 (Element Plus/Ant Design)','项目实战 (3 个)'],
+    startup:['Next.js (全栈)','Supabase (后端)','Tailwind CSS (UI)','Vercel 部署 (一键上线)'],
+    promotion:['深入框架原理','TypeScript 进阶','架构设计 (状态管理)','性能优化 (进阶)'],
+    interest:['Svelte (新范式)','Astro (新理念)','Solid.js (性能)','Web Components (未来)']
+  };
+  var timeMap={
+    '5h':'每天 30-45 分钟，预计 6 个月入门',
+    '10h':'每天 1-1.5 小时，预计 3 个月入门',
+    '20h':'每天 2-3 小时，预计 2 个月入门',
+    'fulltime':'每天 4+ 小时，预计 1 个月速成'
+  };
+  var base=paths[quizAnswers.level];
+  var fw=fws[quizAnswers.goal];
+  var all=base.base.concat(fw);
+  all.push('作品集 (5+ 项目)','模拟面试','简历优化');
+
+  var pathEl=document.getElementById('roadmapPath');
+  pathEl.innerHTML='';
+  all.forEach(function(item,i){
+    if(i>0){
+      var arrow=document.createElement('span');
+      arrow.className='roadmap-arrow';
+      arrow.textContent='→';
+      pathEl.appendChild(arrow);
+    }
+    var node=document.createElement('span');
+    node.className='roadmap-node';
+    node.textContent=(i+1)+'. '+item;
+    node.style.opacity='0';
+    node.style.transform='scale(0.8)';
+    pathEl.appendChild(node);
+    setTimeout(function(){
+      node.style.transition='all 0.4s';
+      node.style.opacity='1';
+      node.style.transform='scale(1)';
+    },i*100);
+  });
+
+  var tips='<strong>💡 学习建议：</strong><br>'+
+    '🎯 你的水平是【'+base.name+'】，目标是【'+quizAnswers.goal==='job'?'找工作':quizAnswers.goal==='startup'?'做副业':quizAnswers.goal==='promotion'?'升职加薪':'纯兴趣'+'】<br>'+
+    '⏰ 投入时间：'+timeMap[quizAnswers.time]+'<br>'+
+    '📌 推荐主学：<strong style="color:var(--accent-blue)">'+fw[0]+'</strong>，辅修：<strong style="color:var(--accent-cyan)">'+fw[1]+'</strong><br>'+
+    '🚀 关键：学完即用，每个知识点都做一个小项目练手';
+  document.getElementById('roadmapTips').innerHTML=tips;
+  document.getElementById('roadmapResult').classList.add('visible');
+}
+
+/* ========== 就业市场 ========== */
+function renderJobs(){
+  var jobs=[
+    {name:'React',emoji:'⚛️',salary:25,junior:15,senior:50,demand:95,trend:5,color:'#61dafb',tags:['需求量大','生态全','大厂必备']},
+    {name:'Vue',emoji:'💚',salary:22,junior:13,senior:45,demand:90,trend:8,color:'#42b883',tags:['国内主流','易上手','文档友好']},
+    {name:'Next.js',emoji:'▲',salary:28,junior:18,senior:60,demand:88,trend:18,color:'#000',tags:['全栈','SEO 友好','薪资高']},
+    {name:'Angular',emoji:'🅰️',salary:23,junior:14,senior:48,demand:70,trend:-2,color:'#dd0031',tags:['企业级','金融/政企','稳定']},
+    {name:'Svelte',emoji:'🔥',salary:20,junior:12,senior:40,demand:55,trend:25,color:'#ff3e00',tags:['新趋势','性能王','小众高薪']},
+    {name:'Nuxt',emoji:'💎',salary:24,junior:15,senior:50,demand:65,trend:12,color:'#00dc82',tags:['Vue 全栈','SEO','国际化']}
+  ];
+  var grid=document.getElementById('jobGrid');
+  if(!grid)return;
+  grid.innerHTML='';
+  jobs.forEach(function(j){
+    var card=document.createElement('div');
+    card.className='job-card';
+    var trendClass=j.trend>0?'job-trend':'job-trend down';
+    var trendText=(j.trend>0?'📈 +':'')+j.trend+'%';
+    card.innerHTML=
+      '<div class="job-header">'+
+        '<div class="job-avatar" style="background:linear-gradient(135deg,'+j.color+','+j.color+'cc)">'+j.emoji+'</div>'+
+        '<div><div class="job-title">'+j.name+' 开发</div><div style="font-size:0.8rem;color:var(--text-secondary)">一线城市 · 全职</div></div>'+
+      '</div>'+
+      '<div class="job-salary">¥'+j.salary+'K <small>/ 月均</small></div>'+
+      '<div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6">'+
+        '<div>初级：¥'+j.junior+'K | 高级：¥'+j.senior+'K</div>'+
+        '<div style="margin-top:0.3rem">招聘需求：<strong style="color:var(--accent-blue)">'+j.demand+'%</strong> <span class="'+trendClass+'">'+trendText+'</span></div>'+
+      '</div>'+
+      '<div class="job-tags">'+j.tags.map(function(t){return '<span class="job-tag">'+t+'</span>'}).join('')+'</div>';
+    grid.appendChild(card);
+  });
+}
+
+/* ========== 全球开发者地图 ========== */
+function renderWorldMap(){
+  var map=document.getElementById('worldMap');
+  if(!map)return;
+  var cities=[
+    {name:'北京',top:'40%',left:'75%',count:120,main:'React/Vue'},
+    {name:'上海',top:'45%',left:'78%',count:100,main:'React/Vue'},
+    {name:'深圳',top:'55%',left:'73%',count:85,main:'React/Vue'},
+    {name:'硅谷',top:'40%',left:'15%',count:200,main:'React/Next.js'},
+    {name:'纽约',top:'38%',left:'28%',count:150,main:'React/Next.js'},
+    {name:'伦敦',top:'32%',left:'48%',count:90,main:'React/Vue'},
+    {name:'柏林',top:'34%',left:'52%',count:60,main:'Svelte/React'},
+    {name:'东京',top:'42%',left:'85%',count:80,main:'Vue/React'},
+    {name:'首尔',top:'40%',left:'83%',count:50,main:'React/Next.js'},
+    {name:'悉尼',top:'72%',left:'88%',count:35,main:'React/Vue'},
+    {name:'圣保罗',top:'68%',left:'32%',count:45,main:'React/Angular'},
+    {name:'班加罗尔',top:'52%',left:'68%',count:110,main:'React/Angular'},
+    {name:'莫斯科',top:'30%',left:'58%',count:50,main:'React/Vue'},
+    {name:'开罗',top:'48%',left:'55%',count:25,main:'Angular'},
+    {name:'开普敦',top:'78%',left:'55%',count:15,main:'React/Vue'}
+  ];
+  cities.forEach(function(c){
+    var dot=document.createElement('div');
+    dot.className='map-dot';
+    dot.style.top=c.top;
+    dot.style.left=c.left;
+    dot.style.animationDelay=(Math.random()*2)+'s';
+    var label=document.createElement('div');
+    label.className='map-label';
+    label.textContent='📍 '+c.name+' · '+c.count+'万 · '+c.main;
+    label.style.top=c.top;
+    label.style.left=c.left;
+    label.style.opacity='0';
+    label.style.transition='opacity 0.3s';
+    dot.onmouseenter=function(){label.style.opacity='1'};
+    dot.onmouseleave=function(){label.style.opacity='0'};
+    map.appendChild(dot);
+    map.appendChild(label);
+  });
+}
+
+/* ========== 初始化新板块 ========== */
+document.addEventListener('DOMContentLoaded',function(){
+  pkRender();
+  renderJobs();
+  renderWorldMap();
+});
 
 /* ========== 数字动画 ========== */
 (function(){
