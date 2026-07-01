@@ -6,23 +6,73 @@
 <title>TechInsight 技术洞察 - 一站式技术分析可视化平台</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
+/* ========== 主题变量 ========== */
+:root{
+  --bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a1f2e;--bg-modal:rgba(10,14,23,0.95);
+  --text-primary:#e2e8f0;--text-secondary:#94a3b8;
+  --accent-blue:#3b82f6;--accent-cyan:#06b6d4;--accent-purple:#8b5cf6;--accent-green:#10b981;--accent-orange:#f59e0b;--accent-pink:#ec4899;
+  --border-color:rgba(255,255,255,0.06);--border-light:rgba(255,255,255,0.1);
+  --glow-blue:0 0 20px rgba(59,130,246,0.3);--glow-cyan:0 0 20px rgba(6,182,212,0.3);
+  --shadow-card:0 4px 20px rgba(0,0,0,0.3);
+  --chart-bg:transparent;
+}
+[data-theme="light"]{
+  --bg-primary:#f8fafc;--bg-secondary:#ffffff;--bg-card:#ffffff;--bg-modal:rgba(255,255,255,0.95);
+  --text-primary:#1e293b;--text-secondary:#64748b;
+  --border-color:rgba(0,0,0,0.08);--border-light:rgba(0,0,0,0.12);
+  --shadow-card:0 4px 20px rgba(0,0,0,0.08);
+  --chart-bg:#ffffff;
+}
+
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a1f2e;--text-primary:#e2e8f0;--text-secondary:#94a3b8;--accent-blue:#3b82f6;--accent-cyan:#06b6d4;--accent-purple:#8b5cf6;--accent-green:#10b981;--accent-orange:#f59e0b;--accent-pink:#ec4899;--border-color:rgba(255,255,255,0.06);--glow-blue:0 0 20px rgba(59,130,246,0.3);--glow-cyan:0 0 20px rgba(6,182,212,0.3)}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden;line-height:1.6}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden;line-height:1.6;transition:background 0.4s,color 0.4s}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg-primary)}
 ::-webkit-scrollbar-thumb{background:var(--accent-blue);border-radius:3px}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(10,14,23,0.8);border-bottom:1px solid var(--border-color);transition:all 0.3s}
-nav.scrolled{padding:0.6rem 2rem;box-shadow:0 4px 30px rgba(0,0,0,0.3)}
-.nav-logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.9rem;transition:color 0.3s;position:relative}
-.nav-links a:hover{color:var(--accent-cyan)}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent-cyan);transition:width 0.3s}
-.nav-links a:hover::after{width:100%}
+/* ========== 加载动画 ========== */
+.loading-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg-primary);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s,visibility 0.5s}
+.loading-overlay.hidden{opacity:0;visibility:hidden}
+.loading-logo{font-size:3rem;font-weight:900;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:loadingPulse 1.5s ease infinite}
+.loading-spinner{width:48px;height:48px;border:3px solid var(--border-light);border-top-color:var(--accent-blue);border-radius:50%;animation:spin 1s linear infinite;margin-top:1.5rem}
+.loading-text{color:var(--text-secondary);margin-top:1rem;font-size:0.9rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes loadingPulse{0%,100%{opacity:1}50%{opacity:0.5}}
 
+/* ========== 新手引导 ========== */
+.guide-overlay{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.3s}
+.guide-overlay.active{opacity:1;visibility:visible}
+.guide-card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:2rem;max-width:420px;text-align:center;box-shadow:var(--shadow-card);animation:guideIn 0.4s ease}
+@keyframes guideIn{from{opacity:0;transform:scale(0.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.guide-icon{font-size:3rem;margin-bottom:1rem}
+.guide-title{font-size:1.3rem;font-weight:700;margin-bottom:0.5rem}
+.guide-desc{color:var(--text-secondary);font-size:0.95rem;margin-bottom:1.5rem;line-height:1.7}
+.guide-steps{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.5rem}
+.guide-step-dot{width:8px;height:8px;border-radius:50%;background:var(--border-light);transition:background 0.3s}
+.guide-step-dot.active{background:var(--accent-blue)}
+.guide-btns{display:flex;gap:1rem;justify-content:center}
+.guide-btn{padding:0.6rem 1.5rem;border-radius:12px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.3s}
+.guide-btn-skip{background:transparent;border:1px solid var(--border-light);color:var(--text-secondary)}
+.guide-btn-next{background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));color:#fff;border:none}
+.guide-btn-skip:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
+.guide-btn-next:hover{transform:translateY(-2px)}
+
+/* ========== 导航栏 ========== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(10,14,23,0.8);border-bottom:1px solid var(--border-color);transition:all 0.3s}
+[data-theme="light"] nav{background:rgba(255,255,255,0.9)}
+nav.scrolled{padding:0.6rem 2rem;box-shadow:var(--shadow-card)}
+.nav-logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
+.nav-center{display:flex;gap:2rem;list-style:none}
+.nav-center a{color:var(--text-secondary);text-decoration:none;font-size:0.9rem;transition:color 0.3s;position:relative}
+.nav-center a:hover{color:var(--accent-cyan)}
+.nav-center a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent-cyan);transition:width 0.3s}
+.nav-center a:hover::after{width:100%}
+.nav-right{display:flex;gap:0.8rem;align-items:center}
+.theme-toggle{width:36px;height:36px;border-radius:10px;border:1px solid var(--border-light);background:transparent;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.3s}
+.theme-toggle:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
+
+/* ========== Hero ========== */
 #hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden}
 #particles-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
 .hero-content{position:relative;z-index:1;max-width:900px;padding:0 2rem}
@@ -35,7 +85,7 @@ nav.scrolled{padding:0.6rem 2rem;box-shadow:0 4px 30px rgba(0,0,0,0.3)}
 .btn{padding:0.8rem 2rem;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.3s;text-decoration:none;border:none}
 .btn-primary{background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));color:#fff;box-shadow:var(--glow-blue)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(59,130,246,0.5)}
-.btn-secondary{background:transparent;color:var(--text-primary);border:1px solid rgba(255,255,255,0.15)}
+.btn-secondary{background:transparent;color:var(--text-primary);border:1px solid var(--border-light)}
 .btn-secondary:hover{border-color:var(--accent-cyan);color:var(--accent-cyan);transform:translateY(-2px)}
 .scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:1;animation:bounce 2s infinite}
 .scroll-indicator span{display:block;width:24px;height:24px;border-right:2px solid var(--accent-cyan);border-bottom:2px solid var(--accent-cyan);transform:rotate(45deg);opacity:0.6}
@@ -46,8 +96,9 @@ section{padding:5rem 2rem}
 .section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:1rem}
 .section-desc{color:var(--text-secondary);max-width:600px;margin:0 auto;font-size:1.05rem}
 
+/* ========== 统计卡片 ========== */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
-.stat-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:2rem;text-align:center;position:relative;overflow:hidden;transition:all 0.4s}
+.stat-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:2rem;text-align:center;position:relative;overflow:hidden;transition:all 0.4s;cursor:pointer}
 .stat-card:hover{transform:translateY(-4px);border-color:rgba(59,130,246,0.3);box-shadow:var(--glow-blue)}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0}
 .stat-card:nth-child(1)::before{background:linear-gradient(90deg,var(--accent-blue),var(--accent-cyan))}
@@ -64,17 +115,23 @@ section{padding:5rem 2rem}
 .stat-change.up{background:rgba(16,185,129,0.15);color:var(--accent-green)}
 .stat-change.down{background:rgba(239,68,68,0.15);color:#ef4444}
 
+/* ========== 筛选栏 ========== */
 .filter-bar{display:flex;align-items:center;justify-content:center;gap:0.8rem;flex-wrap:wrap;max-width:1400px;margin:0 auto 2rem;padding:1rem 1.5rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px}
 .filter-bar .filter-label{color:var(--text-secondary);font-size:0.85rem;font-weight:600;margin-right:0.5rem;white-space:nowrap}
 .filter-item{display:flex;align-items:center;gap:0.4rem;padding:0.4rem 0.9rem;border-radius:20px;cursor:pointer;transition:all 0.3s;border:1px solid transparent;user-select:none;font-size:0.85rem}
 .filter-item:hover{background:rgba(255,255,255,0.05)}
+[data-theme="light"] .filter-item:hover{background:rgba(0,0,0,0.05)}
 .filter-item.active{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.05)}
+[data-theme="light"] .filter-item.active{border-color:rgba(0,0,0,0.15);background:rgba(0,0,0,0.05)}
 .filter-item.inactive{opacity:0.35}
 .filter-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .filter-name{color:var(--text-primary);font-weight:500}
+.export-btn{margin-left:auto;padding:0.5rem 1rem;border-radius:10px;font-size:0.85rem;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);color:var(--accent-purple);cursor:pointer;transition:all 0.3s;font-weight:600}
+.export-btn:hover{background:rgba(139,92,246,0.2);border-color:var(--accent-purple)}
 
+/* ========== 图表 ========== */
 .charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(500px,1fr));gap:1.5rem;max-width:1400px;margin:0 auto}
-.chart-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:1.5rem;transition:all 0.4s;opacity:0;transform:translateY(30px)}
+.chart-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:1.5rem;transition:all 0.4s;opacity:0;transform:translateY(30px);cursor:pointer}
 .chart-card.visible{opacity:1;transform:translateY(0)}
 .chart-card:hover{border-color:rgba(59,130,246,0.3);box-shadow:var(--glow-blue)}
 .chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
@@ -88,12 +145,44 @@ section{padding:5rem 2rem}
 .chart-tag.relation{background:rgba(236,72,153,0.15);color:var(--accent-pink)}
 .chart-tag.heatmap{background:rgba(139,92,246,0.15);color:var(--accent-purple)}
 .chart-container{width:100%;height:350px}
+.chart-click-hint{position:absolute;top:8px;right:8px;font-size:0.65rem;color:var(--text-secondary);opacity:0.5}
 
 .time-range-bar{display:flex;gap:0.4rem;margin-left:auto;margin-right:0.8rem}
-.time-btn{padding:0.25rem 0.7rem;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-secondary);transition:all 0.3s}
+.time-btn{padding:0.25rem 0.7rem;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border-light);background:transparent;color:var(--text-secondary);transition:all 0.3s}
 .time-btn:hover{border-color:var(--accent-blue);color:var(--accent-blue)}
 .time-btn.active{background:rgba(59,130,246,0.2);border-color:var(--accent-blue);color:var(--accent-blue)}
 
+/* ========== 图表详情模态框 ========== */
+.chart-modal{position:fixed;inset:0;z-index:1001;background:var(--bg-modal);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.3s;backdrop-filter:blur(10px)}
+.chart-modal.active{opacity:1;visibility:visible}
+.modal-content{background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:2rem;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow-card);animation:modalIn 0.3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(0.95) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border-color)}
+.modal-title{font-size:1.3rem;font-weight:700}
+.modal-close{width:32px;height:32px;border-radius:8px;border:none;background:transparent;color:var(--text-secondary);cursor:pointer;font-size:1.2rem;transition:all 0.2s}
+.modal-close:hover{background:rgba(255,255,255,0.1);color:var(--text-primary)}
+.modal-body{color:var(--text-secondary);line-height:1.8}
+.modal-highlight{background:rgba(59,130,246,0.1);border-radius:8px;padding:1rem;margin:1rem 0}
+.modal-stat{display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border-color)}
+.modal-stat-label{color:var(--text-secondary)}
+.modal-stat-value{font-weight:700;color:var(--accent-blue)}
+
+/* ========== 案例展示 ========== */
+#cases{padding:5rem 2rem;background:var(--bg-secondary)}
+[data-theme="light"] #cases{background:var(--bg-primary)}
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
+.case-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:1.5rem;transition:all 0.4s;opacity:0;transform:translateY(30px)}
+.case-card.visible{opacity:1;transform:translateY(0)}
+.case-card:hover{transform:translateY(-4px);border-color:rgba(6,182,212,0.3);box-shadow:var(--glow-cyan)}
+.case-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem}
+.case-logo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:rgba(59,130,246,0.1)}
+.case-title{font-size:1.1rem;font-weight:700}
+.case-tag{padding:0.2rem 0.6rem;border-radius:20px;font-size:0.7rem;background:rgba(16,185,129,0.15);color:var(--accent-green)}
+.case-desc{color:var(--text-secondary);font-size:0.9rem;line-height:1.7;margin-bottom:1rem}
+.case-result{display:flex;gap:1rem;flex-wrap:wrap}
+.case-metric{display:flex;align-items:center;gap:0.3rem;padding:0.3rem 0.6rem;border-radius:8px;background:rgba(6,182,212,0.1);font-size:0.8rem;color:var(--accent-cyan)}
+
+/* ========== 核心能力 ========== */
 .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
 .feature-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:2rem;transition:all 0.4s;opacity:0;transform:translateY(30px)}
 .feature-card.visible{opacity:1;transform:translateY(0)}
@@ -109,14 +198,14 @@ section{padding:5rem 2rem}
 footer{text-align:center;padding:3rem 2rem;border-top:1px solid var(--border-color);color:var(--text-secondary);font-size:0.85rem}
 footer .heart{color:var(--accent-pink)}
 
+/* ========== AI 助手 ========== */
 .ai-fab{position:fixed;bottom:2rem;right:2rem;z-index:999;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;box-shadow:0 4px 20px rgba(59,130,246,0.4);transition:all 0.3s}
 .ai-fab:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(59,130,246,0.6)}
 .ai-fab::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));opacity:0.4;animation:aiPulse 2s ease infinite;z-index:-1}
 .ai-fab.hidden{display:none}
-
 @keyframes aiPulse{0%,100%{transform:scale(1);opacity:0.4}50%{transform:scale(1.3);opacity:0}}
 
-.ai-panel{position:fixed;bottom:2rem;right:2rem;z-index:1000;width:380px;max-height:560px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,0.5);transform:scale(0.8) translateY(20px);opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.ai-panel{position:fixed;bottom:2rem;right:2rem;z-index:1000;width:400px;max-height:600px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,0.5);transform:scale(0.8) translateY(20px);opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
 .ai-panel.open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
 
 .ai-panel-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;border-bottom:1px solid var(--border-color)}
@@ -126,7 +215,7 @@ footer .heart{color:var(--accent-pink)}
 .ai-close{background:none;border:none;color:var(--text-secondary);font-size:1.2rem;cursor:pointer;padding:0.2rem 0.5rem;border-radius:8px;transition:all 0.2s}
 .ai-close:hover{background:rgba(255,255,255,0.1);color:var(--text-primary)}
 
-.ai-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;max-height:340px;min-height:200px}
+.ai-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;max-height:380px;min-height:200px}
 .ai-messages::-webkit-scrollbar{width:4px}
 .ai-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
 
@@ -144,11 +233,13 @@ footer .heart{color:var(--accent-pink)}
 .ai-quick{display:flex;flex-wrap:wrap;gap:0.4rem;padding:0.8rem 1rem;border-top:1px solid var(--border-color)}
 .ai-quick-btn{padding:0.35rem 0.75rem;border-radius:20px;font-size:0.78rem;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);color:var(--accent-cyan);cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .ai-quick-btn:hover{background:rgba(6,182,212,0.2);border-color:var(--accent-cyan)}
+.ai-quick-btn.special{background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:var(--accent-purple)}
 
 .ai-input-bar{display:flex;gap:0.5rem;padding:0.8rem 1rem;border-top:1px solid var(--border-color)}
-.ai-input{flex:1;padding:0.5rem 0.8rem;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:var(--text-primary);font-size:0.88rem;outline:none;transition:border-color 0.2s}
+.ai-input{flex:1;padding:0.5rem 0.8rem;border-radius:10px;border:1px solid var(--border-light);background:rgba(255,255,255,0.05);color:var(--text-primary);font-size:0.88rem;outline:none;transition:border-color 0.2s}
+[data-theme="light"] .ai-input{background:rgba(0,0,0,0.03)}
 .ai-input:focus{border-color:var(--accent-blue)}
-.ai-input::placeholder{color:rgba(148,163,184,0.5)}
+.ai-input::placeholder{color:var(--text-secondary)}
 .ai-send{padding:0.5rem 0.8rem;border-radius:10px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));border:none;color:#fff;cursor:pointer;font-size:0.88rem;transition:all 0.2s}
 .ai-send:hover{opacity:0.85}
 
@@ -157,19 +248,20 @@ footer .heart{color:var(--accent-pink)}
 @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes bounce{0%,20%,50%,80%,100%{transform:translateX(-50%) translateY(0)}40%{transform:translateX(-50%) translateY(-10px)}60%{transform:translateX(-50%) translateY(-5px)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 
 @media(max-width:768px){
-  .nav-links{display:none}
+  .nav-center{display:none}
   .charts-grid{grid-template-columns:1fr}
   .chart-container{height:300px}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .stat-number{font-size:2rem}
   section{padding:3rem 1rem}
-  .ai-panel{width:calc(100vw - 2rem);right:1rem;bottom:1rem}
+  .ai-panel{width:calc(100vw - 2rem);right:1rem;bottom:1rem;max-height:70vh}
   .filter-bar{gap:0.5rem;padding:0.8rem 1rem}
   .filter-item{padding:0.3rem 0.6rem;font-size:0.78rem}
+  .export-btn{margin-left:0;margin-top:0.5rem}
+  .cases-grid{grid-template-columns:1fr}
+  .modal-content{padding:1.5rem}
 }
 @media(max-width:480px){
   .stats-grid{grid-template-columns:1fr}
@@ -181,14 +273,55 @@ footer .heart{color:var(--accent-pink)}
 </head>
 <body>
 
+<!-- 加载动画 -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-logo">TechInsight</div>
+  <div class="loading-spinner"></div>
+  <div class="loading-text">正在加载技术数据...</div>
+</div>
+
+<!-- 新手引导 -->
+<div class="guide-overlay" id="guideOverlay">
+  <div class="guide-card" id="guideCard">
+    <div class="guide-icon" id="guideIcon">🚀</div>
+    <div class="guide-title" id="guideTitle">欢迎使用 TechInsight</div>
+    <div class="guide-desc" id="guideDesc">一站式技术分析可视化平台，帮你用数据驱动技术决策</div>
+    <div class="guide-steps" id="guideSteps">
+      <div class="guide-step-dot active"></div>
+      <div class="guide-step-dot"></div>
+      <div class="guide-step-dot"></div>
+      <div class="guide-step-dot"></div>
+    </div>
+    <div class="guide-btns">
+      <button class="guide-btn guide-btn-skip" onclick="skipGuide()">跳过引导</button>
+      <button class="guide-btn guide-btn-next" onclick="nextGuide()">下一步</button>
+    </div>
+  </div>
+</div>
+
+<!-- 图表详情模态框 -->
+<div class="chart-modal" id="chartModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">图表详情</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <nav id="navbar">
   <div class="nav-logo">TechInsight</div>
-  <ul class="nav-links">
+  <ul class="nav-center">
     <li><a href="#hero">首页</a></li>
-    <li><a href="#stats">数据概览</a></li>
-    <li><a href="#charts">深度分析</a></li>
-    <li><a href="#features">核心能力</a></li>
+    <li><a href="#stats">数据</a></li>
+    <li><a href="#charts">分析</a></li>
+    <li><a href="#cases">案例</a></li>
+    <li><a href="#features">能力</a></li>
   </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+  </div>
 </nav>
 
 <section id="hero">
@@ -203,7 +336,7 @@ footer .heart{color:var(--accent-pink)}
     </p>
     <div class="hero-cta">
       <a href="#charts" class="btn btn-primary">开始分析</a>
-      <a href="#features" class="btn btn-secondary">了解更多</a>
+      <a href="#cases" class="btn btn-secondary">查看案例</a>
     </div>
   </div>
   <div class="scroll-indicator"><span></span></div>
@@ -216,25 +349,25 @@ footer .heart{color:var(--accent-pink)}
     <p class="section-desc">聚合全球技术生态关键指标，一目了然掌握行业脉搏</p>
   </div>
   <div class="stats-grid">
-    <div class="stat-card">
+    <div class="stat-card" onclick="showStatDetail('npm')">
       <div class="stat-icon">📦</div>
       <div class="stat-number" data-target="2847563" data-suffix="">0</div>
       <div class="stat-label">NPM 周下载量（万）</div>
       <div class="stat-change up">↑ 23.5%</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" onclick="showStatDetail('github')">
       <div class="stat-icon">⭐</div>
       <div class="stat-number" data-target="892" data-suffix="K">0</div>
       <div class="stat-label">GitHub Stars 总计</div>
       <div class="stat-change up">↑ 15.2%</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" onclick="showStatDetail('frameworks')">
       <div class="stat-icon">🔧</div>
       <div class="stat-number" data-target="156" data-suffix="+">0</div>
       <div class="stat-label">主流框架数量</div>
       <div class="stat-change up">↑ 8.7%</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" onclick="showStatDetail('developers')">
       <div class="stat-icon">👥</div>
       <div class="stat-number" data-target="4280" data-suffix="万">0</div>
       <div class="stat-label">全球开发者</div>
@@ -247,10 +380,10 @@ footer .heart{color:var(--accent-pink)}
   <div class="section-header">
     <div class="section-tag">深度分析</div>
     <h2 class="section-title">多维度技术洞察</h2>
-    <p class="section-desc">从趋势、对比、分布、评估等多个视角深度解析技术生态</p>
+    <p class="section-desc">从趋势、对比、分布、评估等多个视角深度解析技术生态<br><span style="font-size:0.85rem;opacity:0.7">点击图表查看详细分析</span></p>
   </div>
   <div class="filter-bar" id="filterBar">
-    <span class="filter-label">🔍 筛选框架：</span>
+    <span class="filter-label">🔍 筛选：</span>
     <div class="filter-item active" data-framework="React" onclick="toggleFilter(this)">
       <span class="filter-dot" style="background:#3b82f6"></span>
       <span class="filter-name">React</span>
@@ -275,63 +408,130 @@ footer .heart{color:var(--accent-pink)}
       <span class="filter-dot" style="background:#ec4899"></span>
       <span class="filter-name">Nuxt</span>
     </div>
+    <button class="export-btn" onclick="exportReport()">📥 导出报告</button>
   </div>
   <div class="charts-grid">
-    <div class="chart-card" data-delay="0">
+    <div class="chart-card" data-delay="0" data-chart="trend" onclick="showChartDetail('trend')">
       <div class="chart-header">
         <span class="chart-title">📈 前端框架趋势分析</span>
         <div style="display:flex;align-items:center;gap:0.5rem">
           <div class="time-range-bar">
-            <button class="time-btn" data-range="3" onclick="switchTimeRange(3,this)">近3年</button>
-            <button class="time-btn" data-range="5" onclick="switchTimeRange(5,this)">近5年</button>
-            <button class="time-btn active" data-range="7" onclick="switchTimeRange(7,this)">全部</button>
+            <button class="time-btn" data-range="3" onclick="switchTimeRange(3,this);event.stopPropagation()">近3年</button>
+            <button class="time-btn" data-range="5" onclick="switchTimeRange(5,this);event.stopPropagation()">近5年</button>
+            <button class="time-btn active" data-range="7" onclick="switchTimeRange(7,this);event.stopPropagation()">全部</button>
           </div>
           <span class="chart-tag trend">趋势</span>
         </div>
       </div>
       <div class="chart-container" id="chart-trend"></div>
     </div>
-    <div class="chart-card" data-delay="100">
+    <div class="chart-card" data-delay="100" data-chart="compare" onclick="showChartDetail('compare')">
       <div class="chart-header">
         <span class="chart-title">📊 框架使用对比</span>
         <span class="chart-tag compare">对比</span>
       </div>
       <div class="chart-container" id="chart-compare"></div>
     </div>
-    <div class="chart-card" data-delay="200">
+    <div class="chart-card" data-delay="200" data-chart="pie" onclick="showChartDetail('pie')">
       <div class="chart-header">
         <span class="chart-title">🍩 技术栈占比分布</span>
         <span class="chart-tag distribution">分布</span>
       </div>
       <div class="chart-container" id="chart-pie"></div>
     </div>
-    <div class="chart-card" data-delay="300">
+    <div class="chart-card" data-delay="300" data-chart="radar" onclick="showChartDetail('radar')">
       <div class="chart-header">
         <span class="chart-title">🎯 技术能力评估</span>
         <span class="chart-tag assessment">评估</span>
       </div>
       <div class="chart-container" id="chart-radar"></div>
     </div>
-    <div class="chart-card" data-delay="400">
+    <div class="chart-card" data-delay="400" data-chart="gauge" onclick="showChartDetail('gauge')">
       <div class="chart-header">
         <span class="chart-title">💨 项目健康度</span>
         <span class="chart-tag health">健康</span>
       </div>
       <div class="chart-container" id="chart-gauge"></div>
     </div>
-    <div class="chart-card" data-delay="500">
+    <div class="chart-card" data-delay="500" data-chart="scatter" onclick="showChartDetail('scatter')">
       <div class="chart-header">
         <span class="chart-title">🔵 性能与复杂度关系</span>
         <span class="chart-tag relation">关系</span>
       </div>
       <div class="chart-container" id="chart-scatter"></div>
     </div>
-    <div class="chart-card" data-delay="600" style="grid-column:1/-1">
+    <div class="chart-card" data-delay="600" data-chart="heatmap" style="grid-column:1/-1" onclick="showChartDetail('heatmap')">
       <div class="chart-header">
         <span class="chart-title">🗓️ 代码提交活跃度</span>
         <span class="chart-tag heatmap">热力</span>
       </div>
       <div class="chart-container" id="chart-heatmap"></div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="section-header">
+    <div class="section-tag">真实案例</div>
+    <h2 class="section-title">他们如何使用 TechInsight</h2>
+    <p class="section-desc">真实用户的技术选型故事，数据驱动决策的成功实践</p>
+  </div>
+  <div class="cases-grid">
+    <div class="case-card" data-delay="0">
+      <div class="case-header">
+        <div class="case-logo">🏢</div>
+        <div>
+          <div class="case-title">大型电商平台重构</div>
+          <span class="case-tag">企业级</span>
+        </div>
+      </div>
+      <div class="case-desc">某头部电商平台使用 TechInsight 对比 React、Vue、Angular 后，基于"生态成熟度+团队熟悉度"双维度评估，选择 React 作为重构方案。</div>
+      <div class="case-result">
+        <span class="case-metric">⏱️ 决策时间缩短 60%</span>
+        <span class="case-metric">💰 降低重构风险 40%</span>
+      </div>
+    </div>
+    <div class="case-card" data-delay="100">
+      <div class="case-header">
+        <div class="case-logo">🚀</div>
+        <div>
+          <div class="case-title">初创公司快速启动</div>
+          <span class="case-tag">初创</span>
+        </div>
+      </div>
+      <div class="case-desc">某 AI 初创公司通过 TechInsight 发现 Vue 的"学习曲线+开发体验"评分最高，团队 3 天内完成技术栈搭建并上线 MVP。</div>
+      <div class="case-result">
+        <span class="case-metric">⚡ 上线速度提升 3x</span>
+        <span class="case-metric">👥 团队上手成本降低</span>
+      </div>
+    </div>
+    <div class="case-card" data-delay="200">
+      <div class="case-header">
+        <div class="case-logo">🎓</div>
+        <div>
+          <div class="case-title">技术培训课程设计</div>
+          <span class="case-tag">教育</span>
+        </div>
+      </div>
+      <div class="case-desc">某在线教育平台使用 TechInsight 趋势分析功能，发现 Svelte 增速最快，及时更新课程内容，学员满意度提升 35%。</div>
+      <div class="case-result">
+        <span class="case-metric">📈 课程更新更及时</span>
+        <span class="case-metric">⭐ 学员满意度 +35%</span>
+      </div>
+    </div>
+    <div class="case-card" data-delay="300">
+      <div class="case-header">
+        <div class="case-logo">🔧</div>
+        <div>
+          <div class="case-title">技术债务评估</div>
+          <span class="case-tag">维护</span>
+        </div>
+      </div>
+      <div class="case-desc">某金融公司使用 TechInsight 的"项目健康度"指标，发现 Angular 项目健康度仅 34 分，及时启动技术债务清理计划。</div>
+      <div class="case-result">
+        <span class="case-metric">🔍 发现隐患更早</span>
+        <span class="case-metric">🛠️ 维护成本可控</span>
+      </div>
     </div>
   </div>
 </section>
@@ -367,7 +567,7 @@ footer .heart{color:var(--accent-pink)}
 </section>
 
 <footer>
-  <p>TechInsight 技术洞察 &copy; 2026 &nbsp;|&nbsp; 用 <span class="heart">♥</span> 和数据驱动技术决策</p>
+  <p>TechInsight 技术洞察 &copy; 2026 | 用 <span class="heart">♥</span> 和数据驱动技术决策 | TRAE AI 创造力大赛参赛作品</p>
 </footer>
 
 <button class="ai-fab" id="aiFab" onclick="openAiPanel()">🤖</button>
@@ -381,10 +581,12 @@ footer .heart{color:var(--accent-pink)}
     <div class="ai-msg bot">👋 你好！我是 TechInsight AI 助手，可以帮你分析技术选型、框架对比等数据。试试下面的问题，或直接输入你的疑问！</div>
   </div>
   <div class="ai-quick">
-    <button class="ai-quick-btn" onclick="askAi('React vs Vue 怎么选？')">React vs Vue 怎么选？</button>
-    <button class="ai-quick-btn" onclick="askAi('新手推荐学什么？')">新手推荐学什么？</button>
-    <button class="ai-quick-btn" onclick="askAi('哪个框架性能最好？')">哪个框架性能最好？</button>
-    <button class="ai-quick-btn" onclick="askAi('2025年前端趋势？')">2025年前端趋势？</button>
+    <button class="ai-quick-btn" onclick="askAi('React vs Vue 怎么选？')">React vs Vue</button>
+    <button class="ai-quick-btn" onclick="askAi('新手推荐学什么？')">新手推荐</button>
+    <button class="ai-quick-btn" onclick="askAi('哪个框架性能最好？')">性能对比</button>
+    <button class="ai-quick-btn" onclick="askAi('2025年前端趋势？')">趋势预测</button>
+    <button class="ai-quick-btn" onclick="askAi('Angular 还值得学吗？')">Angular 现状</button>
+    <button class="ai-quick-btn special" onclick="generateCustomInsight()">🎯 生成我的洞察报告</button>
   </div>
   <div class="ai-input-bar">
     <input class="ai-input" id="aiInput" placeholder="输入你的技术问题..." onkeydown="if(event.key==='Enter')sendAiMessage()">
@@ -393,9 +595,12 @@ footer .heart{color:var(--accent-pink)}
 </div>
 
 <script>
+/* ========== 全局变量 ========== */
 var chartInstances={};
 var activeFilters={React:true,Vue:true,Angular:true,Svelte:true,'Next.js':true,Nuxt:true};
 var currentTimeRange=7;
+var guideStep=0;
+var currentTheme='dark';
 
 var trendData={
   years:['2019','2020','2021','2022','2023','2024','2025'],
@@ -441,9 +646,168 @@ var aiKnowledge={
   '新手推荐学什么？':'根据学习曲线和开发体验数据分析：\n\n🟢 首选 Vue：学习曲线评分85分（最高），开发体验90分，文档中文友好，上手最快。NPM下载量480万/周，生态足够丰富。\n\n🟣 备选 Svelte：学习曲线90分，语法最简洁，但生态评分仅45分，就业市场35分，适合个人项目。\n\n⚠️ 不推荐新手直接学 Angular：学习曲线仅40分，复杂度最高，除非目标公司明确使用。\n\n💡 建议路径：Vue 入门 → React 进阶 → 按需学 Svelte/Next.js',
   '哪个框架性能最好？':'根据性能基准测试数据：\n\n🟣 Svelte 性能王者：性能评分95分！编译时框架，无虚拟DOM开销，包体积仅8KB，运行时性能最优。\n\n🔵 React：性能85分，虚拟DOM在大多数场景表现良好，但包体积15KB，复杂场景下需注意优化。\n\n🟢 Vue：性能82分，响应式系统高效，包体积12KB，性价比很高。\n\n⚠️ Angular：性能60分，包体积25KB，但提供了最完整的企业级方案。\n\n💡 结论：追求极致性能选 Svelte，平衡性能与生态选 React/Vue。',
   '2025年前端趋势？':'基于 TechInsight 2019-2025趋势数据分析：\n\n📈 上升趋势：\n• Svelte：从2019年8分飙升至2025年60分，增速最快（+650%）\n• Vue：稳步增长至85分，年复合增长率8%\n• React：保持领先93分，但增速放缓趋于成熟\n\n📉 下降趋势：\n• Angular：从45分降至34分，持续下滑\n\n🔮 预测：\n1. 编译时框架（Svelte/Solid）将持续增长\n2. Meta-framework（Next.js/Nuxt）成为标配\n3. React 生态仍将主导就业市场\n4. AI 辅助开发将重塑前端工作流',
+  'Angular 还值得学吗？':'基于 TechInsight 数据分析：\n\n📉 Angular 现状：\n• 搜索热度从45分降至34分，连续6年下滑\n• Issue响应时间48小时，维护效率较低\n• 包体积25KB，性能评分60分\n\n✅ 仍值得学的场景：\n1. 目标公司明确使用 Angular（部分大企业仍依赖）\n2. 需要完整的企业级方案（依赖注入、模块化等）\n3. Java/Spring 背景的开发者（概念相似）\n\n⚠️ 不推荐：纯前端求职、初创公司、追求开发效率\n\n💡 建议：如果已学 Angular，可转向 React/Vue 补充技能栈；如果未学，建议直接学 React/Vue。',
   'default':'基于 TechInsight 数据分析：\n\n当前前端框架生态呈现"一超多强"格局：\n• React 以93分搜索热度领先，生态最成熟\n• Vue 稳步增长至85分，NPM下载量最高\n• Svelte 增速最快，是最大黑马\n• Angular 持续下滑，企业市场仍有一定份额\n\n你可以试试左上角的框架筛选器，或点击具体图表查看更详细的数据对比。有更具体的技术问题也欢迎继续问我！'
 };
 
+var chartDetails={
+  trend:{
+    title:'📈 前端框架趋势分析',
+    content:'<div class="modal-highlight">从 2019 到 2025 年，前端框架生态格局发生显著变化</div><div class="modal-stat"><span class="modal-stat-label">React 增长率</span><span class="modal-stat-value">+29% (72→93)</span></div><div class="modal-stat"><span class="modal-stat-label">Vue 增长率</span><span class="modal-stat-value">+47% (58→85)</span></div><div class="modal-stat"><span class="modal-stat-label">Svelte 增长率</span><span class="modal-stat-value">+650% (8→60) 🚀</span></div><div class="modal-stat"><span class="modal-stat-label">Angular 变化</span><span class="modal-stat-value">-24% (45→34) ⚠️</span></div><p style="margin-top:1rem">💡 <b>洞察</b>：Svelte 是增速最快的框架，React 生态趋于成熟稳定，Vue 稳步增长，Angular 需关注技术债务风险。</p>'
+  },
+  compare:{
+    title:'📊 框架使用对比',
+    content:'<div class="modal-highlight">多维度对比框架的 Stars、下载量、Issue响应速度</div><div class="modal-stat"><span class="modal-stat-label">Stars 最多</span><span class="modal-stat-value">React 220K</span></div><div class="modal-stat"><span class="modal-stat-label">下载量最高</span><span class="modal-stat-value">Vue 480万/周</span></div><div class="modal-stat"><span class="modal-stat-label">响应最快</span><span class="modal-stat-value">Svelte 12h</span></div><div class="modal-stat"><span class="modal-stat-label">响应最慢</span><span class="modal-stat-value">Angular 48h</span></div><p style="margin-top:1rem">💡 <b>洞察</b>：Vue 的 NPM 下载量最高说明实际使用广泛，Svelte 的 Issue 响应快说明社区活跃度高。</p>'
+  },
+  pie:{
+    title:'🍩 技术栈占比分布',
+    content:'<div class="modal-highlight">全球前端技术栈市场份额分布</div><div class="modal-stat"><span class="modal-stat-label">React 占比</span><span class="modal-stat-value">32%</span></div><div class="modal-stat"><span class="modal-stat-label">Vue 占比</span><span class="modal-stat-value">26%</span></div><div class="modal-stat"><span class="modal-stat-label">Angular 占比</span><span class="modal-stat-value">14%</span></div><div class="modal-stat"><span class="modal-stat-label">Svelte 占比</span><span class="modal-stat-value">10%</span></div><p style="margin-top:1rem">💡 <b>洞察</b>：React + Vue 占据近 60% 市场份额，是主流选择。Svelte 快速增长抢占 10% 市场。</p>'
+  },
+  radar:{
+    title:'🎯 技术能力评估',
+    content:'<div class="modal-highlight">六维度技术能力雷达图对比</div><div class="modal-stat"><span class="modal-stat-label">性能最佳</span><span class="modal-stat-value">Svelte 95分</span></div><div class="modal-stat"><span class="modal-stat-label">生态最成熟</span><span class="modal-stat-value">React 95分</span></div><div class="modal-stat"><span class="modal-stat-label">学习曲线最佳</span><span class="modal-stat-value">Svelte 90分</span></div><div class="modal-stat"><span class="modal-stat-label">就业市场最强</span><span class="modal-stat-value">React 95分</span></div><p style="margin-top:1rem">💡 <b>洞察</b>：不同框架各有优势，根据项目需求选择对应维度得分高的框架。</p>'
+  },
+  gauge:{
+    title:'💨 项目健康度',
+    content:'<div class="modal-highlight">实时监测项目技术健康状态</div><div class="modal-stat"><span class="modal-stat-label">当前健康度</span><span class="modal-stat-value">78%</span></div><div class="modal-stat"><span class="modal-stat-label">健康标准</span><span class="modal-stat-value">>70%</span></div><div class="modal-stat"><span class="modal-stat-label">警戒线</span><span class="modal-stat-value"><50%</span></div><p style="margin-top:1rem">💡 <b>洞察</b>：健康度综合考虑代码质量、依赖更新、社区支持等因素。建议定期监测，低于 50% 需启动技术债务清理。</p>'
+  },
+  scatter:{
+    title:'🔵 性能与复杂度关系',
+    content:'<div class="modal-highlight">分析框架性能与代码复杂度的平衡关系</div><div class="modal-stat"><span class="modal-stat-label">最优性价比</span><span class="modal-stat-value">Svelte (复杂度5,性能90)</span></div><div class="modal-stat"><span class="modal-stat-label">性能王者</span><span class="modal-stat-value">Qwik (复杂度4,性能92)</span></div><div class="modal-stat"><span class="modal-stat-label">复杂度最高</span><span class="modal-stat-value">Angular (复杂度15,性能60)</span></div><p style="margin-top:1rem">💡 <b>洞察</b>：左上角（低复杂度+高性能）的框架是最佳选择。Svelte、Qwik、SolidJS 处于此区域。</p>'
+  },
+  heatmap:{
+    title:'🗓️ 代码提交活跃度',
+    content:'<div class="modal-highlight">全球开发者代码提交时间分布热力图</div><div class="modal-stat"><span class="modal-stat-label">高峰时段</span><span class="modal-stat-value">周一至周五 9-18点</span></div><div class="modal-stat"><span class="modal-stat-label">活跃度峰值</span><span class="modal-stat-value">60-100次提交</span></div><div class="modal-stat"><span class="modal-stat-label">周末活跃度</span><span class="modal-stat-value">5-20次提交</span></div><p style="margin-top:1rem">💡 <b>洞察</b>：开发者主要集中在工作日提交代码，晚上 20-23 点也有一定活跃度。可用于团队协作时间规划。</p>'
+  }
+};
+
+var statDetails={
+  npm:{title:'📦 NPM 周下载量详情',content:'<div class="modal-highlight">全球 NPM 包周下载量统计</div><div class="modal-stat"><span class="modal-stat-label">总计</span><span class="modal-stat-value">284.7万</span></div><div class="modal-stat"><span class="modal-stat-label">同比增长</span><span class="modal-stat-value">+23.5%</span></div><div class="modal-stat"><span class="modal-stat-label">Vue 下载量</span><span class="modal-stat-value">480万/周 (最高)</span></div><p style="margin-top:1rem">💡 NPM 下载量反映框架的实际使用频率，Vue 的下载量最高说明在生产环境中使用最广泛。</p>'},
+  github:{title:'⭐ GitHub Stars 详情',content:'<div class="modal-highlight">GitHub Stars 反映社区关注度和热度</div><div class="modal-stat"><span class="modal-stat-label">总计</span><span class="modal-stat-value">892K</span></div><div class="modal-stat"><span class="modal-stat-label">同比增长</span><span class="modal-stat-value">+15.2%</span></div><div class="modal-stat"><span class="modal-stat-label">React Stars</span><span class="modal-stat-value">220K (最高)</span></div><p style="margin-top:1rem">💡 Stars 数量代表开发者对框架的关注程度，React 的 Stars 最高说明其在开发者心目中的地位最高。</p>'},
+  frameworks:{title:'🔧 主流框架数量详情',content:'<div class="modal-highlight">前端生态中的主流框架总数</div><div class="modal-stat"><span class="modal-stat-label">总计</span><span class="modal-stat-value">156+</span></div><div class="modal-stat"><span class="modal-stat-label">同比增长</span><span class="modal-stat-value">+8.7%</span></div><div class="modal-stat"><span class="modal-stat-label">新兴框架</span><span class="modal-stat-value">Svelte, SolidJS, Qwik</span></div><p style="margin-top:1rem">💡 框架数量的增长说明前端生态持续繁荣，但也增加了选型难度。TechInsight 帮你快速筛选。</p>'},
+  developers:{title:'👥 全球开发者详情',content:'<div class="modal-highlight">全球前端开发者规模</div><div class="modal-stat"><span class="modal-stat-label">总计</span><span class="modal-stat-value">4280万</span></div><div class="modal-stat"><span class="modal-stat-label">同比增长</span><span class="modal-stat-value">+31.4%</span></div><div class="modal-stat"><span class="modal-stat-label">中国开发者</span><span class="modal-stat-value">约800万</span></div><p style="margin-top:1rem">💡 开发者数量的快速增长说明前端领域仍是热门方向，就业市场需求旺盛。</p>'}
+};
+
+var guideSteps=[
+  {icon:'🚀',title:'欢迎使用 TechInsight',desc:'一站式技术分析可视化平台，帮你用数据驱动技术决策'},
+  {icon:'🔍',title:'框架筛选器',desc:'点击筛选栏中的框架名称，可实时切换图表显示内容'},
+  {icon:'📊',title:'图表详情',desc:'点击任意图表可查看更详细的数据分析和洞察'},
+  {icon:'🤖',title:'AI 智能助手',desc:'右下角的 AI 助手可回答技术选型问题，还能生成定制报告'}
+];
+
+/* ========== 加载动画 ========== */
+setTimeout(function(){
+  document.getElementById('loadingOverlay').classList.add('hidden');
+  if(!localStorage.getItem('techinsight_guide_done')){
+    setTimeout(function(){document.getElementById('guideOverlay').classList.add('active')},500);
+  }
+},1500);
+
+/* ========== 新手引导 ========== */
+function skipGuide(){
+  document.getElementById('guideOverlay').classList.remove('active');
+  localStorage.setItem('techinsight_guide_done','true');
+}
+
+function nextGuide(){
+  guideStep++;
+  if(guideStep>=guideSteps.length){
+    skipGuide();
+    return;
+  }
+  var step=guideSteps[guideStep];
+  document.getElementById('guideIcon').textContent=step.icon;
+  document.getElementById('guideTitle').textContent=step.title;
+  document.getElementById('guideDesc').textContent=step.desc;
+  var dots=document.querySelectorAll('.guide-step-dot');
+  dots.forEach(function(d,i){d.classList.toggle('active',i===guideStep)});
+}
+
+/* ========== 主题切换 ========== */
+function toggleTheme(){
+  currentTheme=currentTheme==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',currentTheme);
+  document.getElementById('themeToggle').textContent=currentTheme==='dark'?'🌙':'☀️';
+  localStorage.setItem('techinsight_theme',currentTheme);
+  
+  // 更新图表背景
+  var bgColor=currentTheme==='dark'?'transparent':'#ffffff';
+  Object.keys(chartInstances).forEach(function(key){
+    if(chartInstances[key]){
+      chartInstances[key].setOption({backgroundColor:bgColor});
+    }
+  });
+}
+
+// 初始化主题
+if(localStorage.getItem('techinsight_theme')==='light'){
+  currentTheme='light';
+  document.documentElement.setAttribute('data-theme','light');
+  document.getElementById('themeToggle').textContent='☀️';
+}
+
+/* ========== 图表详情模态框 ========== */
+function showChartDetail(chartType){
+  var detail=chartDetails[chartType];
+  if(!detail)return;
+  document.getElementById('modalTitle').textContent=detail.title;
+  document.getElementById('modalBody').innerHTML=detail.content;
+  document.getElementById('chartModal').classList.add('active');
+}
+
+function showStatDetail(statType){
+  var detail=statDetails[statType];
+  if(!detail)return;
+  document.getElementById('modalTitle').textContent=detail.title;
+  document.getElementById('modalBody').innerHTML=detail.content;
+  document.getElementById('chartModal').classList.add('active');
+}
+
+function closeModal(){
+  document.getElementById('chartModal').classList.remove('active');
+}
+
+// 点击模态框背景关闭
+document.getElementById('chartModal').addEventListener('click',function(e){
+  if(e.target===this)closeModal();
+});
+
+/* ========== 导出报告 ========== */
+function exportReport(){
+  var fws=getFilteredFrameworks();
+  var reportHTML='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>TechInsight 分析报告</title><style>body{font-family:sans-serif;background:#f5f5f5;padding:40px}h1{color:#3b82f6}h2{color:#1e293b;margin-top:30px}.section{background:#fff;padding:20px;border-radius:12px;margin:20px 0;box-shadow:0 2px 10px rgba(0,0,0,0.1)}.metric{display:inline-block;padding:8px 16px;background:#e0f2fe;border-radius:8px;margin:5px;color:#0369a1}.footer{text-align:center;color:#64748b;margin-top:40px}</style></head><body>';
+  reportHTML+='<h1>TechInsight 技术分析报告</h1>';
+  reportHTML+='<p>生成时间：'+new Date().toLocaleString()+'</p>';
+  reportHTML+='<p>筛选框架：'+(fws.length?fws.join('、'):'全部')+'</p>';
+  reportHTML+='<div class="section"><h2>数据概览</h2>';
+  reportHTML+='<span class="metric">NPM周下载量：284.7万</span>';
+  reportHTML+='<span class="metric">GitHub Stars：892K</span>';
+  reportHTML+='<span class="metric">主流框架：156+</span>';
+  reportHTML+='<span class="metric">全球开发者：4280万</span></div>';
+  reportHTML+='<div class="section"><h2>框架对比</h2>';
+  fws.forEach(function(fw){
+    var star=compareData.stars[compareData.categories.indexOf(fw)]||0;
+    var dl=compareData.downloads[compareData.categories.indexOf(fw)]||0;
+    reportHTML+='<span class="metric">'+fw+': Stars '+star+'K, NPM '+dl+'万/周</span>';
+  });
+  reportHTML+='</div>';
+  reportHTML+='<div class="section"><h2>趋势洞察</h2>';
+  reportHTML+='<p>• React：生态成熟，就业市场最强，适合大型项目</p>';
+  reportHTML+='<p>• Vue：学习曲线友好，下载量最高，适合快速开发</p>';
+  reportHTML+='<p>• Svelte：性能最优，增速最快，适合追求极致性能</p>';
+  reportHTML+='<p>• Angular：企业级方案完整，但热度下滑需关注</p></div>';
+  reportHTML+='<div class="footer">TechInsight 技术洞察 | TRAE AI 创造力大赛参赛作品</div></body></html>';
+  
+  var blob=new Blob([reportHTML],{type:'text/html'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='TechInsight_Report_'+new Date().toISOString().slice(0,10)+'.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ========== 框架筛选 ========== */
 function toggleFilter(el){
   var fw=el.getAttribute('data-framework');
   activeFilters[fw]=!activeFilters[fw];
@@ -485,28 +849,14 @@ function updateTrendChart(){
   if(!chart)return;
   var startIdx=trendData.years.length-currentTimeRange;
   var years=trendData.years.slice(startIdx);
-  var fwMap={React:0,Vue:1,Angular:2,Svelte:3};
   var series=[];
-  var fwNames=['React','Vue','Angular','Svelte'];
-  fwNames.forEach(function(fw){
+  ['React','Vue','Angular','Svelte'].forEach(function(fw){
     if(!activeFilters[fw])return;
     var color=frameworkColors[fw];
     var data=trendData[fw].slice(startIdx);
-    series.push({
-      name:fw,type:'line',smooth:true,data:data,
-      lineStyle:{width:3},itemStyle:{color:color},
-      areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[
-        {offset:0,color:color.replace(')',',0.3)').replace('rgb','rgba')},
-        {offset:1,color:color.replace(')',',0)').replace('rgb','rgba')}
-      ])},
-      symbol:'circle',symbolSize:6
-    });
+    series.push({name:fw,type:'line',smooth:true,data:data,lineStyle:{width:3},itemStyle:{color:color},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:color},{offset:1,color:color}])},symbol:'circle',symbolSize:6});
   });
-  chart.setOption({
-    xAxis:{data:years},
-    legend:{data:series.map(function(s){return s.name})},
-    series:series
-  });
+  chart.setOption({xAxis:{data:years},legend:{data:series.map(function(s){return s.name})},series:series});
 }
 
 function updateCompareChart(){
@@ -524,8 +874,8 @@ function updateCompareChart(){
     xAxis:{data:cats},
     legend:{data:cats.length?['GitHub Stars(K)','NPM周下载(万)','Issue响应时间(h)']:[]},
     series:[
-      {name:'GitHub Stars(K)',type:'bar',data:stars,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#3b82f6'},{offset:1,color:'#1d4ed8'}]),borderRadius:[4,4,0,0]},barWidth:20},
-      {name:'NPM周下载(万)',type:'bar',data:downloads,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#8b5cf6'},{offset:1,color:'#6d28d9'}]),borderRadius:[4,4,0,0]},barWidth:20},
+      {name:'GitHub Stars(K)',type:'bar',data:stars,itemStyle:{color:'#3b82f6',borderRadius:[4,4,0,0]},barWidth:20},
+      {name:'NPM周下载(万)',type:'bar',data:downloads,itemStyle:{color:'#8b5cf6',borderRadius:[4,4,0,0]},barWidth:20},
       {name:'Issue响应时间(h)',type:'line',yAxisIndex:1,data:issueTime,lineStyle:{width:3,color:'#f59e0b'},itemStyle:{color:'#f59e0b'},symbol:'circle',symbolSize:8}
     ]
   });
@@ -546,17 +896,9 @@ function updateRadarChart(){
   ['React','Vue','Svelte'].forEach(function(fw){
     if(!activeFilters[fw])return;
     var color=frameworkColors[fw];
-    series.push({
-      value:radarData[fw],name:fw,
-      lineStyle:{color:color,width:2},
-      areaStyle:{color:color.replace(')',',0.15)').replace('rgb','rgba')},
-      itemStyle:{color:color}
-    });
+    series.push({value:radarData[fw],name:fw,lineStyle:{color:color,width:2},areaStyle:{color:color},itemStyle:{color:color}});
   });
-  chart.setOption({
-    legend:{data:series.map(function(s){return s.name})},
-    series:[{type:'radar',data:series}]
-  });
+  chart.setOption({legend:{data:series.map(function(s){return s.name})},series:[{type:'radar',data:series}]});
 }
 
 function updateScatterChart(){
@@ -567,6 +909,7 @@ function updateScatterChart(){
   chart.setOption({series:[{data:data}]});
 }
 
+/* ========== AI 助手 ========== */
 function openAiPanel(){
   document.getElementById('aiFab').classList.add('hidden');
   document.getElementById('aiPanel').classList.add('open');
@@ -603,6 +946,68 @@ function askAi(question){
   },800+Math.random()*600);
 }
 
+function generateCustomInsight(){
+  var fws=getFilteredFrameworks();
+  if(fws.length===0){
+    askAi('请先选择至少一个框架');
+    return;
+  }
+  
+  var customQuestion='🎯 我当前筛选的框架：'+fws.join('、');
+  var msgs=document.getElementById('aiMessages');
+  var userMsg=document.createElement('div');
+  userMsg.className='ai-msg user';
+  userMsg.textContent=customQuestion+'\n请生成定制洞察报告';
+  msgs.appendChild(userMsg);
+  msgs.scrollTop=msgs.scrollHeight;
+
+  var typing=document.createElement('div');
+  typing.className='ai-typing';
+  typing.innerHTML='<span></span><span></span><span></span>';
+  msgs.appendChild(typing);
+  msgs.scrollTop=msgs.scrollHeight;
+
+  // 生成定制报告
+  var report='基于你筛选的 '+fws.length+' 个框架的定制洞察报告：\n\n';
+  
+  if(fws.indexOf('React')!==-1){
+    report+='🔵 React：生态最成熟（95分），就业市场最强（95分），GitHub Stars 220K，适合大型项目和求职。\n';
+  }
+  if(fws.indexOf('Vue')!==-1){
+    report+='🟢 Vue：学习曲线友好（85分），开发体验优秀（90分），NPM下载量480万/周最高，适合快速开发和新手。\n';
+  }
+  if(fws.indexOf('Angular')!==-1){
+    report+='🟡 Angular：企业级方案完整，但热度下滑至34分，Issue响应48小时较慢，需关注技术债务风险。\n';
+  }
+  if(fws.indexOf('Svelte')!==-1){
+    report+='🟣 Svelte：性能王者（95分），包体积仅8KB最小，增速最快+650%，适合追求极致性能和创新项目。\n';
+  }
+  if(fws.indexOf('Next.js')!==-1){
+    report+='🔷 Next.js：React生态的Meta-framework，GitHub Stars 120K，NPM下载85万/周，适合SEO和全栈项目。\n';
+  }
+  if(fws.indexOf('Nuxt')!==-1){
+    report+='💗 Nuxt：Vue生态的Meta-framework，GitHub Stars 54K，NPM下载45万/周，适合Vue全栈项目。\n';
+  }
+
+  report+='\n💡 综合建议：\n';
+  if(fws.length>=3){
+    report+='你对比了多个框架，建议根据"项目规模+团队熟悉度+就业需求"三维度做最终决策。';
+  }else if(fws.length===2){
+    report+='两个框架对比，可关注"性能+生态"的平衡点，或根据团队现有技术栈选择兼容性更好的方案。';
+  }else{
+    report+='单一框架分析，建议再添加一个对比框架以获得更全面的决策依据。';
+  }
+
+  setTimeout(function(){
+    var t=document.getElementById('aiTyping');
+    if(t)t.remove();
+    var botMsg=document.createElement('div');
+    botMsg.className='ai-msg bot';
+    msgs.appendChild(botMsg);
+    typeWriterEffect(botMsg,report,0);
+  },1200);
+}
+
 function typeWriterEffect(el,text,idx){
   if(idx>=text.length){
     var msgs=document.getElementById('aiMessages');
@@ -625,6 +1030,7 @@ function sendAiMessage(){
   askAi(q);
 }
 
+/* ========== 粒子动画 ========== */
 (function(){
   var canvas=document.getElementById('particles-canvas');
   var ctx=canvas.getContext('2d');
@@ -639,434 +1045,271 @@ function sendAiMessage(){
   resizeCanvas();
   window.addEventListener('resize',resizeCanvas);
 
-  function Particle(){
-    this.x=Math.random()*canvas.width;
-    this.y=Math.random()*canvas.height;
-    this.vx=(Math.random()-0.5)*0.5;
-    this.vy=(Math.random()-0.5)*0.5;
-    this.radius=Math.random()*2+1;
-    this.opacity=Math.random()*0.5+0.2;
-  }
-
   for(var i=0;i<particleCount;i++){
-    particles.push(new Particle());
+    particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,radius:Math.random()*2+1,opacity:Math.random()*0.5+0.2});
   }
 
-  document.addEventListener('mousemove',function(e){
-    mouseX=e.clientX;
-    mouseY=e.clientY;
-  });
+  document.addEventListener('mousemove',function(e){mouseX=e.clientX;mouseY=e.clientY});
 
-  function animateParticles(){
+  function animate(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for(var i=0;i<particles.length;i++){
       var p=particles[i];
-      p.x+=p.vx;
-      p.y+=p.vy;
+      p.x+=p.vx;p.y+=p.vy;
       if(p.x<0||p.x>canvas.width)p.vx*=-1;
       if(p.y<0||p.y>canvas.height)p.vy*=-1;
-
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
       ctx.fillStyle='rgba(59,130,246,'+p.opacity+')';
       ctx.fill();
-
       for(var j=i+1;j<particles.length;j++){
-        var p2=particles[j];
-        var dx=p.x-p2.x;
-        var dy=p.y-p2.y;
-        var dist=Math.sqrt(dx*dx+dy*dy);
+        var p2=particles[j],dx=p.x-p2.x,dy=p.y-p2.y,dist=Math.sqrt(dx*dx+dy*dy);
         if(dist<150){
-          ctx.beginPath();
-          ctx.moveTo(p.x,p.y);
-          ctx.lineTo(p2.x,p2.y);
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p2.x,p2.y);
           ctx.strokeStyle='rgba(59,130,246,'+(1-dist/150)*0.15+')';
-          ctx.lineWidth=0.5;
-          ctx.stroke();
+          ctx.lineWidth=0.5;ctx.stroke();
         }
       }
-
-      var dxm=p.x-mouseX;
-      var dym=p.y-mouseY;
-      var distm=Math.sqrt(dxm*dxm+dym*dym);
+      var dxm=p.x-mouseX,dym=p.y-mouseY,distm=Math.sqrt(dxm*dxm+dym*dym);
       if(distm<200){
-        ctx.beginPath();
-        ctx.moveTo(p.x,p.y);
-        ctx.lineTo(mouseX,mouseY);
+        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(mouseX,mouseY);
         ctx.strokeStyle='rgba(6,182,212,'+(1-distm/200)*0.2+')';
-        ctx.lineWidth=0.5;
-        ctx.stroke();
+        ctx.lineWidth=0.5;ctx.stroke();
       }
     }
-    requestAnimationFrame(animateParticles);
+    requestAnimationFrame(animate);
   }
-  animateParticles();
+  animate();
 })();
 
+/* ========== 打字机效果 ========== */
 (function(){
-  var texts=[
-    '聚合多源数据，让技术选型有据可依',
-    '可视化分析，10分钟完成2小时的工作',
-    'AI 驱动洞察，提前把握技术趋势',
-    '一站式平台，告别碎片化信息收集'
-  ];
+  var texts=['聚合多源数据，让技术选型有据可依','可视化分析，10分钟完成2小时的工作','AI 驱动洞察，提前把握技术趋势','一站式平台，告别碎片化信息收集'];
   var textIndex=0,charIndex=0,isDeleting=false;
-  var typewriterEl=document.getElementById('typewriter');
-
+  var el=document.getElementById('typewriter');
   function type(){
-    var currentText=texts[textIndex];
+    var t=texts[textIndex];
     if(!isDeleting){
-      typewriterEl.textContent=currentText.substring(0,charIndex+1);
-      charIndex++;
-      if(charIndex===currentText.length){
-        isDeleting=true;
-        setTimeout(type,2000);
-        return;
-      }
+      el.textContent=t.substring(0,charIndex+1);charIndex++;
+      if(charIndex===t.length){isDeleting=true;setTimeout(type,2000);return}
       setTimeout(type,80);
     }else{
-      typewriterEl.textContent=currentText.substring(0,charIndex-1);
-      charIndex--;
-      if(charIndex===0){
-        isDeleting=false;
-        textIndex=(textIndex+1)%texts.length;
-        setTimeout(type,500);
-        return;
-      }
+      el.textContent=t.substring(0,charIndex-1);charIndex--;
+      if(charIndex===0){isDeleting=false;textIndex=(textIndex+1)%texts.length;setTimeout(type,500);return}
       setTimeout(type,40);
     }
   }
   setTimeout(type,1000);
 })();
 
+/* ========== 导航栏滚动效果 ========== */
 (function(){
   var navbar=document.getElementById('navbar');
   window.addEventListener('scroll',function(){
-    if(window.scrollY>50){
-      navbar.classList.add('scrolled');
-    }else{
-      navbar.classList.remove('scrolled');
-    }
+    if(window.scrollY>50){navbar.classList.add('scrolled')}else{navbar.classList.remove('scrolled')}
   });
 })();
 
+/* ========== 数字动画 ========== */
 (function(){
-  var statNumbers=document.querySelectorAll('.stat-number');
   var animated=false;
-
   function animateNumbers(){
-    statNumbers.forEach(function(el){
+    document.querySelectorAll('.stat-number').forEach(function(el){
       var target=parseInt(el.getAttribute('data-target'));
       var suffix=el.getAttribute('data-suffix')||'';
-      var duration=2000;
-      var start=0;
-      var startTime=null;
-
-      function step(timestamp){
-        if(!startTime)startTime=timestamp;
-        var progress=Math.min((timestamp-startTime)/duration,1);
+      var duration=2000,startTime=null;
+      function step(ts){
+        if(!startTime)startTime=ts;
+        var progress=Math.min((ts-startTime)/duration,1);
         var eased=1-Math.pow(1-progress,3);
-        var current=Math.floor(eased*target);
-        el.textContent=current.toLocaleString()+suffix;
-        if(progress<1){
-          requestAnimationFrame(step);
-        }
+        el.textContent=Math.floor(eased*target).toLocaleString()+suffix;
+        if(progress<1)requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
     });
   }
-
   var observer=new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
-      if(entry.isIntersecting&&!animated){
-        animated=true;
-        animateNumbers();
-      }
+      if(entry.isIntersecting&&!animated){animated=true;animateNumbers()}
     });
   },{threshold:0.3});
-
-  var statsSection=document.getElementById('stats');
-  if(statsSection)observer.observe(statsSection);
+  observer.observe(document.getElementById('stats'));
 })();
 
+/* ========== 滚动动画 ========== */
 (function(){
-  var chartCards=document.querySelectorAll('.chart-card');
-  var featureCards=document.querySelectorAll('.feature-card');
-
   var observer=new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if(entry.isIntersecting){
         var delay=parseInt(entry.target.getAttribute('data-delay'))||0;
-        setTimeout(function(){
-          entry.target.classList.add('visible');
-        },delay);
+        setTimeout(function(){entry.target.classList.add('visible')},delay);
       }
     });
   },{threshold:0.1});
-
-  chartCards.forEach(function(card){observer.observe(card)});
-  featureCards.forEach(function(card){observer.observe(card)});
+  document.querySelectorAll('.chart-card,.feature-card,.case-card').forEach(function(card){observer.observe(card)});
 })();
 
-var darkTheme={
-  backgroundColor:'transparent',
-  textStyle:{color:'#e2e8f0'},
-  title:{textStyle:{color:'#e2e8f0'}},
-  legend:{textStyle:{color:'#94a3b8'},pageTextStyle:{color:'#94a3b8'}},
-  tooltip:{
-    backgroundColor:'rgba(26,31,46,0.95)',
-    borderColor:'rgba(255,255,255,0.1)',
-    textStyle:{color:'#e2e8f0'}
-  },
-  xAxis:{
-    axisLine:{lineStyle:{color:'rgba(255,255,255,0.1)'}},
-    axisLabel:{color:'#94a3b8'},
-    splitLine:{lineStyle:{color:'rgba(255,255,255,0.05)'}}
-  },
-  yAxis:{
-    axisLine:{lineStyle:{color:'rgba(255,255,255,0.1)'}},
-    axisLabel:{color:'#94a3b8'},
-    splitLine:{lineStyle:{color:'rgba(255,255,255,0.05)'}}
-  }
+/* ========== ECharts 图表 ========== */
+var themeConfig={
+  backgroundColor:currentTheme==='dark'?'transparent':'#ffffff',
+  textStyle:{color:currentTheme==='dark'?'#e2e8f0':'#1e293b'},
+  legend:{textStyle:{color:currentTheme==='dark'?'#94a3b8':'#64748b'}},
+  tooltip:{backgroundColor:currentTheme==='dark'?'rgba(26,31,46,0.95)':'rgba(255,255,255,0.95)',borderColor:'rgba(255,255,255,0.1)',textStyle:{color:currentTheme==='dark'?'#e2e8f0':'#1e293b'}},
+  xAxis:{axisLine:{lineStyle:{color:currentTheme==='dark'?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.1)'}},axisLabel:{color:currentTheme==='dark'?'#94a3b8':'#64748b'},splitLine:{lineStyle:{color:currentTheme==='dark'?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}}},
+  yAxis:{axisLine:{lineStyle:{color:currentTheme==='dark'?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.1)'}},axisLabel:{color:currentTheme==='dark'?'#94a3b8':'#64748b'},splitLine:{lineStyle:{color:currentTheme==='dark'?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}}}
 };
 
+// 趋势图
 (function(){
   var chart=echarts.init(document.getElementById('chart-trend'));
   chartInstances.trend=chart;
-  var option={
-    ...darkTheme,
-    tooltip:{trigger:'axis',...darkTheme.tooltip},
-    legend:{data:['React','Vue','Angular','Svelte'],...darkTheme.legend,top:0},
+  chart.setOption({
+    ...themeConfig,
+    tooltip:{trigger:'axis',...themeConfig.tooltip},
+    legend:{data:['React','Vue','Angular','Svelte'],...themeConfig.legend,top:0},
     grid:{left:'3%',right:'4%',bottom:'3%',containLabel:true},
-    xAxis:{type:'category',boundaryGap:false,data:trendData.years,...darkTheme.xAxis},
-    yAxis:{type:'value',name:'搜索热度',nameTextStyle:{color:'#94a3b8'},...darkTheme.yAxis},
+    xAxis:{type:'category',boundaryGap:false,data:trendData.years,...themeConfig.xAxis},
+    yAxis:{type:'value',name:'搜索热度',nameTextStyle:{color:themeConfig.textStyle.color},...themeConfig.yAxis},
     series:[
-      {name:'React',type:'line',smooth:true,data:trendData.React,lineStyle:{width:3},itemStyle:{color:'#3b82f6'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(59,130,246,0.3)'},{offset:1,color:'rgba(59,130,246,0)'}])},symbol:'circle',symbolSize:6},
-      {name:'Vue',type:'line',smooth:true,data:trendData.Vue,lineStyle:{width:3},itemStyle:{color:'#10b981'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(16,185,129,0.3)'},{offset:1,color:'rgba(16,185,129,0)'}])},symbol:'circle',symbolSize:6},
-      {name:'Angular',type:'line',smooth:true,data:trendData.Angular,lineStyle:{width:3},itemStyle:{color:'#f59e0b'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(245,158,11,0.3)'},{offset:1,color:'rgba(245,158,11,0)'}])},symbol:'circle',symbolSize:6},
-      {name:'Svelte',type:'line',smooth:true,data:trendData.Svelte,lineStyle:{width:3},itemStyle:{color:'#8b5cf6'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(139,92,246,0.3)'},{offset:1,color:'rgba(139,92,246,0)'}])},symbol:'circle',symbolSize:6}
+      {name:'React',type:'line',smooth:true,data:trendData.React,lineStyle:{width:3},itemStyle:{color:'#3b82f6'},areaStyle:{color:'rgba(59,130,246,0.3)'},symbol:'circle',symbolSize:6},
+      {name:'Vue',type:'line',smooth:true,data:trendData.Vue,lineStyle:{width:3},itemStyle:{color:'#10b981'},areaStyle:{color:'rgba(16,185,129,0.3)'},symbol:'circle',symbolSize:6},
+      {name:'Angular',type:'line',smooth:true,data:trendData.Angular,lineStyle:{width:3},itemStyle:{color:'#f59e0b'},areaStyle:{color:'rgba(245,158,11,0.3)'},symbol:'circle',symbolSize:6},
+      {name:'Svelte',type:'line',smooth:true,data:trendData.Svelte,lineStyle:{width:3},itemStyle:{color:'#8b5cf6'},areaStyle:{color:'rgba(139,92,246,0.3)'},symbol:'circle',symbolSize:6}
     ],
-    animationDuration:2000,
-    animationEasing:'cubicInOut'
-  };
-  chart.setOption(option);
+    animationDuration:2000
+  });
   window.addEventListener('resize',function(){chart.resize()});
 })();
 
+// 对比图
 (function(){
   var chart=echarts.init(document.getElementById('chart-compare'));
   chartInstances.compare=chart;
-  var option={
-    ...darkTheme,
-    tooltip:{trigger:'axis',...darkTheme.tooltip},
-    legend:{data:['GitHub Stars(K)','NPM周下载(万)','Issue响应时间(h)'],...darkTheme.legend,top:0},
+  chart.setOption({
+    ...themeConfig,
+    tooltip:{trigger:'axis',...themeConfig.tooltip},
+    legend:{data:['GitHub Stars(K)','NPM周下载(万)','Issue响应时间(h)'],...themeConfig.legend,top:0},
     grid:{left:'3%',right:'4%',bottom:'3%',containLabel:true},
-    xAxis:{type:'category',data:compareData.categories,...darkTheme.xAxis},
-    yAxis:[
-      {type:'value',name:'数量',nameTextStyle:{color:'#94a3b8'},...darkTheme.yAxis},
-      {type:'value',name:'小时',nameTextStyle:{color:'#94a3b8'},...darkTheme.yAxis}
-    ],
+    xAxis:{type:'category',data:compareData.categories,...themeConfig.xAxis},
+    yAxis:[{type:'value',name:'数量',nameTextStyle:{color:themeConfig.textStyle.color},...themeConfig.yAxis},{type:'value',name:'小时',nameTextStyle:{color:themeConfig.textStyle.color},...themeConfig.yAxis}],
     series:[
-      {name:'GitHub Stars(K)',type:'bar',data:compareData.stars,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#3b82f6'},{offset:1,color:'#1d4ed8'}]),borderRadius:[4,4,0,0]},barWidth:20},
-      {name:'NPM周下载(万)',type:'bar',data:compareData.downloads,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#8b5cf6'},{offset:1,color:'#6d28d9'}]),borderRadius:[4,4,0,0]},barWidth:20},
+      {name:'GitHub Stars(K)',type:'bar',data:compareData.stars,itemStyle:{color:'#3b82f6',borderRadius:[4,4,0,0]},barWidth:20},
+      {name:'NPM周下载(万)',type:'bar',data:compareData.downloads,itemStyle:{color:'#8b5cf6',borderRadius:[4,4,0,0]},barWidth:20},
       {name:'Issue响应时间(h)',type:'line',yAxisIndex:1,data:compareData.issueTime,lineStyle:{width:3,color:'#f59e0b'},itemStyle:{color:'#f59e0b'},symbol:'circle',symbolSize:8}
     ],
-    animationDuration:2000,
-    animationEasing:'cubicInOut'
-  };
-  chart.setOption(option);
+    animationDuration:2000
+  });
   window.addEventListener('resize',function(){chart.resize()});
 })();
 
+// 饼图
 (function(){
   var chart=echarts.init(document.getElementById('chart-pie'));
   chartInstances.pie=chart;
-  var option={
-    ...darkTheme,
-    tooltip:{trigger:'item',...darkTheme.tooltip,formatter:'{b}: {c}% ({d}%)'},
-    legend:{orient:'vertical',right:'5%',top:'center',...darkTheme.legend},
-    series:[{
-      type:'pie',
-      radius:['40%','70%'],
-      center:['40%','50%'],
-      avoidLabelOverlap:true,
-      itemStyle:{borderRadius:8,borderColor:'#1a1f2e',borderWidth:3},
-      label:{show:true,color:'#94a3b8',formatter:'{b}\n{d}%'},
-      emphasis:{label:{show:true,fontSize:14,fontWeight:'bold',color:'#e2e8f0'},itemStyle:{shadowBlur:20,shadowColor:'rgba(59,130,246,0.5)'}},
-      data:pieData
-    }],
-    animationDuration:2000,
-    animationEasing:'cubicInOut'
-  };
-  chart.setOption(option);
+  chart.setOption({
+    ...themeConfig,
+    tooltip:{trigger:'item',...themeConfig.tooltip,formatter:'{b}: {c}% ({d}%)'},
+    legend:{orient:'vertical',right:'5%',top:'center',...themeConfig.legend},
+    series:[{type:'pie',radius:['40%','70%'],center:['40%','50%'],itemStyle:{borderRadius:8,borderWidth:3},label:{show:true,formatter:'{b}\n{d}%'},data:pieData}],
+    animationDuration:2000
+  });
   window.addEventListener('resize',function(){chart.resize()});
 })();
 
+// 雷达图
 (function(){
   var chart=echarts.init(document.getElementById('chart-radar'));
   chartInstances.radar=chart;
-  var option={
-    ...darkTheme,
-    tooltip:{...darkTheme.tooltip},
-    legend:{data:['React','Vue','Svelte'],...darkTheme.legend,top:0},
-    radar:{
-      indicator:radarData.indicators.map(function(n){return{name:n,max:100}}),
-      shape:'circle',
-      splitNumber:5,
-      axisName:{color:'#94a3b8'},
-      splitLine:{lineStyle:{color:'rgba(255,255,255,0.08)'}},
-      splitArea:{areaStyle:{color:['rgba(59,130,246,0.02)','rgba(59,130,246,0.05)']}},
-      axisLine:{lineStyle:{color:'rgba(255,255,255,0.1)'}}
-    },
-    series:[{
-      type:'radar',
-      data:[
-        {value:radarData.React,name:'React',lineStyle:{color:'#3b82f6',width:2},areaStyle:{color:'rgba(59,130,246,0.15)'},itemStyle:{color:'#3b82f6'}},
-        {value:radarData.Vue,name:'Vue',lineStyle:{color:'#10b981',width:2},areaStyle:{color:'rgba(16,185,129,0.15)'},itemStyle:{color:'#10b981'}},
-        {value:radarData.Svelte,name:'Svelte',lineStyle:{color:'#8b5cf6',width:2},areaStyle:{color:'rgba(139,92,246,0.15)'},itemStyle:{color:'#8b5cf6'}}
-      ]
-    }],
+  chart.setOption({
+    ...themeConfig,
+    tooltip:{...themeConfig.tooltip},
+    legend:{data:['React','Vue','Svelte'],...themeConfig.legend,top:0},
+    radar:{indicator:radarData.indicators.map(function(n){return{name:n,max:100}}),shape:'circle',splitNumber:5,axisName:{color:themeConfig.textStyle.color}},
+    series:[{type:'radar',data:[
+      {value:radarData.React,name:'React',lineStyle:{color:'#3b82f6',width:2},areaStyle:{color:'rgba(59,130,246,0.15)'},itemStyle:{color:'#3b82f6'}},
+      {value:radarData.Vue,name:'Vue',lineStyle:{color:'#10b981',width:2},areaStyle:{color:'rgba(16,185,129,0.15)'},itemStyle:{color:'#10b981'}},
+      {value:radarData.Svelte,name:'Svelte',lineStyle:{color:'#8b5cf6',width:2},areaStyle:{color:'rgba(139,92,246,0.15)'},itemStyle:{color:'#8b5cf6'}}
+    ]}],
     animationDuration:2000
-  };
-  chart.setOption(option);
+  });
   window.addEventListener('resize',function(){chart.resize()});
 })();
 
+// 仪表盘
 (function(){
   var chart=echarts.init(document.getElementById('chart-gauge'));
   chartInstances.gauge=chart;
-  var option={
+  chart.setOption({
     series:[{
-      type:'gauge',
-      startAngle:200,
-      endAngle:-20,
-      min:0,
-      max:100,
-      splitNumber:10,
+      type:'gauge',startAngle:200,endAngle:-20,min:0,max:100,splitNumber:10,
       itemStyle:{color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#10b981'},{offset:0.5,color:'#f59e0b'},{offset:1,color:'#ef4444'}])},
-      progress:{show:true,width:20},
-      pointer:{show:true,length:'60%',width:5,itemStyle:{color:'#e2e8f0'}},
+      progress:{show:true,width:20},pointer:{show:true,length:'60%',width:5,itemStyle:{color:'#e2e8f0'}},
       axisLine:{lineStyle:{width:20,color:[[1,'rgba(255,255,255,0.08)']]}},
       axisTick:{lineStyle:{color:'rgba(255,255,255,0.2)',width:1},length:8},
       splitLine:{lineStyle:{color:'rgba(255,255,255,0.2)',width:2},length:15},
       axisLabel:{distance:25,color:'#94a3b8',fontSize:11},
       title:{offsetCenter:[0,'75%'],color:'#94a3b8',fontSize:14},
-      detail:{valueAnimation:true,fontSize:36,offsetCenter:[0,'45%'],color:'#e2e8f0',formatter:'{value}%',fontWeight:'bold'},
+      detail:{valueAnimation:true,fontSize:36,offsetCenter:[0,'45%'],color:'#e2e8f0',formatter:'{value}%'},
       data:[{value:78,name:'项目健康度'}]
     }],
-    animationDuration:2000,
-    animationEasing:'cubicInOut'
-  };
-  chart.setOption(option);
+    animationDuration:2000
+  });
   window.addEventListener('resize',function(){chart.resize()});
-
-  setInterval(function(){
-    var value=Math.round(70+Math.random()*20);
-    chart.setOption({series:[{data:[{value:value,name:'项目健康度'}]}]});
-  },3000);
+  setInterval(function(){chart.setOption({series:[{data:[{value:Math.round(70+Math.random()*20),name:'项目健康度'}]}]})},3000);
 })();
 
+// 散点图
 (function(){
   var chart=echarts.init(document.getElementById('chart-scatter'));
   chartInstances.scatter=chart;
-  var option={
-    ...darkTheme,
-    tooltip:{
-      ...darkTheme.tooltip,
-      formatter:function(p){
-        return p.data[3]+'<br/>复杂度: '+p.data[0]+'<br/>性能评分: '+p.data[1]+'<br/>包大小(KB): '+p.data[2];
-      }
-    },
+  chart.setOption({
+    ...themeConfig,
+    tooltip:{...themeConfig.tooltip,formatter:function(p){return p.data[3]+'<br/>复杂度:'+p.data[0]+'<br/>性能:'+p.data[1]+'<br/>包大小:'+p.data[2]+'KB'}},
     grid:{left:'3%',right:'10%',bottom:'3%',containLabel:true},
-    xAxis:{type:'value',name:'代码复杂度',nameTextStyle:{color:'#94a3b8'},...darkTheme.xAxis},
-    yAxis:{type:'value',name:'性能评分',nameTextStyle:{color:'#94a3b8'},...darkTheme.yAxis},
-    visualMap:{
-      min:5,max:25,
-      dimension:2,
-      orient:'vertical',
-      right:10,
-      top:'center',
-      text:['大','小'],
-      textStyle:{color:'#94a3b8'},
-      inRange:{color:['#10b981','#f59e0b','#ef4444']},
-      formatter:function(val){return Math.round(val)+'KB'}
-    },
-    series:[{
-      type:'scatter',
-      symbolSize:function(data){return Math.sqrt(data[2])*5},
-      data:scatterData,
-      label:{show:true,formatter:function(p){return p.data[3]},position:'top',color:'#94a3b8',fontSize:11},
-      emphasis:{label:{show:true,fontSize:14,fontWeight:'bold',color:'#e2e8f0'}}
-    }],
+    xAxis:{type:'value',name:'代码复杂度',nameTextStyle:{color:themeConfig.textStyle.color},...themeConfig.xAxis},
+    yAxis:{type:'value',name:'性能评分',nameTextStyle:{color:themeConfig.textStyle.color},...themeConfig.yAxis},
+    visualMap:{min:5,max:25,dimension:2,orient:'vertical',right:10,top:'center',text:['大','小'],textStyle:{color:themeConfig.textStyle.color},inRange:{color:['#10b981','#f59e0b','#ef4444']},
+      formatter:function(val){return Math.round(val)+'KB'}},
+    series:[{type:'scatter',symbolSize:function(data){return Math.sqrt(data[2])*5},data:scatterData,label:{show:true,formatter:function(p){return p.data[3]},position:'top',fontSize:11}}],
     animationDuration:2000
-  };
-  chart.setOption(option);
+  });
   window.addEventListener('resize',function(){chart.resize()});
 })();
 
+// 热力图
 (function(){
   var chart=echarts.init(document.getElementById('chart-heatmap'));
   chartInstances.heatmap=chart;
   var weeks=['周一','周二','周三','周四','周五','周六','周日'];
-  var hours=[];
-  for(var i=0;i<24;i++){
-    hours.push(i+':00');
-  }
+  var hours=[];for(var i=0;i<24;i++){hours.push(i+':00')}
   var data=[];
   for(var w=0;w<7;w++){
     for(var h=0;h<24;h++){
       var val=0;
-      if(h>=9&&h<=18&&w<5){
-        val=Math.round(Math.random()*40+60);
-      }else if(h>=20&&h<=23&&w<5){
-        val=Math.round(Math.random()*20+10);
-      }else if(w>=5){
-        val=Math.round(Math.random()*15+5);
-      }else{
-        val=Math.round(Math.random()*5);
-      }
+      if(h>=9&&h<=18&&w<5){val=Math.round(Math.random()*40+60)}
+      else if(h>=20&&h<=23&&w<5){val=Math.round(Math.random()*20+10)}
+      else if(w>=5){val=Math.round(Math.random()*15+5)}
+      else{val=Math.round(Math.random()*5)}
       data.push([h,w,val]);
     }
   }
-  var option={
-    ...darkTheme,
-    tooltip:{
-      ...darkTheme.tooltip,
-      formatter:function(p){
-        return weeks[p.data[1]]+' '+hours[p.data[0]]+'<br/>提交数: '+p.data[2];
-      }
-    },
-    grid:{left:'8%',right:'12%',bottom:'10%',top:'5%',containLabel:false},
-    xAxis:{type:'category',data:hours,...darkTheme.xAxis,axisLabel:{color:'#94a3b8',interval:2}},
-    yAxis:{type:'category',data:weeks,...darkTheme.yAxis},
-    visualMap:{
-      min:0,max:100,
-      calculable:true,
-      orient:'vertical',
-      right:'2%',
-      top:'center',
-      text:['高','低'],
-      textStyle:{color:'#94a3b8'},
-      inRange:{color:['#0a0e17','#1e3a5f','#3b82f6','#06b6d4','#10b981']}
-    },
-    series:[{
-      type:'heatmap',
-      data:data,
-      label:{show:false},
-      emphasis:{itemStyle:{shadowBlur:10,shadowColor:'rgba(59,130,246,0.5)'}},
-      itemStyle:{borderColor:'#1a1f2e',borderWidth:2,borderRadius:4}
-    }],
+  chart.setOption({
+    ...themeConfig,
+    tooltip:{...themeConfig.tooltip,formatter:function(p){return weeks[p.data[1]]+' '+hours[p.data[0]]+'<br/>提交数:'+p.data[2]}},
+    grid:{left:'8%',right:'12%',bottom:'10%',top:'5%'},
+    xAxis:{type:'category',data:hours,...themeConfig.xAxis,axisLabel:{interval:2}},
+    yAxis:{type:'category',data:weeks,...themeConfig.yAxis},
+    visualMap:{min:0,max:100,calculable:true,orient:'vertical',right:'2%',top:'center',text:['高','低'],textStyle:{color:themeConfig.textStyle.color},inRange:{color:['#0a0e17','#1e3a5f','#3b82f6','#06b6d4','#10b981']}},
+    series:[{type:'heatmap',data:data,itemStyle:{borderRadius:4}}],
     animationDuration:2000
-  };
-  chart.setOption(option);
+  });
   window.addEventListener('resize',function(){chart.resize()});
 })();
 
+// 全局 resize
 window.addEventListener('resize',function(){
-  var charts=document.querySelectorAll('.chart-container');
-  charts.forEach(function(el){
-    var instance=echarts.getInstanceByDom(el);
-    if(instance)instance.resize();
+  Object.keys(chartInstances).forEach(function(key){
+    if(chartInstances[key])chartInstances[key].resize();
   });
 });
 </script>
