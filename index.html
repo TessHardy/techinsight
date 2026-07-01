@@ -103,10 +103,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 2rem;display:f
 nav.scrolled{padding:0.6rem 2rem;box-shadow:var(--shadow-card)}
 .nav-logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
 .nav-center{display:flex;gap:2rem;list-style:none}
-.nav-center a{color:var(--text-secondary);text-decoration:none;font-size:0.9rem;transition:color 0.3s;position:relative}
-.nav-center a:hover{color:var(--accent-cyan)}
+.nav-center a{color:var(--text-secondary);text-decoration:none;font-size:0.9rem;transition:color 0.3s;position:relative;padding:0.4rem 0.6rem;border-radius:6px}
+.nav-center a:hover{color:var(--accent-cyan);background:rgba(6,182,212,0.06)}
 .nav-center a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent-cyan);transition:width 0.3s}
 .nav-center a:hover::after{width:100%}
+.nav-center a.active{color:var(--accent-cyan);background:rgba(6,182,212,0.1);font-weight:600}
+.nav-center a.active::after{width:60%}
 .nav-right{display:flex;gap:0.8rem;align-items:center}
 .theme-toggle{width:36px;height:36px;border-radius:10px;border:1px solid var(--border-light);background:transparent;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.3s}
 .theme-toggle:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
@@ -2259,6 +2261,46 @@ window.addEventListener('hashchange',syncUrlToState);
 window.addEventListener('DOMContentLoaded',function(){
   setTimeout(syncUrlToState,500);
 });
+
+/* ========== 导航栏滚动监听（原生 IntersectionObserver） ========== */
+(function(){
+  if(typeof IntersectionObserver==='undefined')return;
+  var sections=document.querySelectorAll('section[id]');
+  var navLinks=document.querySelectorAll('.nav-center a');
+  function setActive(id){
+    navLinks.forEach(function(a){
+      var href=a.getAttribute('href')||'';
+      a.classList.toggle('active',href==='#'+id);
+    });
+  }
+  var visible=new Map();
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting)visible.set(e.target.id,e.intersectionRatio);
+      else visible.delete(e.target.id);
+    });
+    if(!visible.size)return;
+    var top=null,maxRatio=0;
+    visible.forEach(function(ratio,id){
+      var el=document.getElementById(id);
+      if(!el)return;
+      var rect=el.getBoundingClientRect();
+      var dist=Math.abs(rect.top-window.innerHeight*0.3);
+      var score=ratio*1000-dist;
+      if(!top||score>maxRatio){maxRatio=score;top=id}
+    });
+    if(top)setActive(top);
+  },{rootMargin:'-30% 0px -50% 0px',threshold:[0,0.25,0.5,0.75,1]});
+  sections.forEach(function(s){io.observe(s)});
+  navLinks.forEach(function(a){
+    a.addEventListener('click',function(){
+      var href=a.getAttribute('href')||'';
+      if(href.startsWith('#')){
+        setActive(href.slice(1));
+      }
+    });
+  });
+})();
 
 /* ========== 复制代码到剪贴板（增强） ========== */
 function copyCode(text,btn){
