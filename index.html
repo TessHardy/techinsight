@@ -263,11 +263,75 @@ footer .heart{color:var(--accent-pink)}
   .cases-grid{grid-template-columns:1fr}
   .modal-content{padding:1.5rem}
 }
+/* ========== 技术选型评分 ========== */
+.score-btn{padding:0.5rem 1rem;border-radius:10px;font-size:0.85rem;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--accent-green);cursor:pointer;transition:all 0.3s;font-weight:600;margin-left:0.5rem}
+.score-btn:hover{background:rgba(16,185,129,0.2);border-color:var(--accent-green);transform:scale(1.02)}
+.score-modal{position:fixed;inset:0;z-index:1002;background:var(--bg-modal);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.3s;backdrop-filter:blur(10px)}
+.score-modal.active{opacity:1;visibility:visible}
+.score-content{background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:2rem;max-width:700px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-card);animation:modalIn 0.3s ease}
+.score-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border-color)}
+.score-title{font-size:1.3rem;font-weight:700}
+.score-close{width:32px;height:32px;border-radius:8px;border:none;background:transparent;color:var(--text-secondary);cursor:pointer;font-size:1.2rem;transition:all 0.2s}
+.score-close:hover{background:rgba(255,255,255,0.1);color:var(--text-primary)}
+.scene-selector{display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.scene-btn{padding:0.5rem 1.2rem;border-radius:20px;font-size:0.85rem;background:transparent;border:1px solid var(--border-light);color:var(--text-secondary);cursor:pointer;transition:all 0.3s}
+.scene-btn:hover{border-color:var(--accent-blue);color:var(--accent-blue)}
+.scene-btn.active{background:rgba(59,130,246,0.2);border-color:var(--accent-blue);color:var(--accent-blue)}
+.score-result{margin-top:1.5rem}
+.score-chart{width:100%;height:280px}
+.score-recommend{margin-top:1.5rem;padding:1rem;background:rgba(16,185,129,0.1);border-radius:12px;border:1px solid rgba(16,185,129,0.2)}
+.score-recommend-title{font-size:1rem;font-weight:700;color:var(--accent-green);margin-bottom:0.5rem}
+.score-recommend-text{color:var(--text-secondary);line-height:1.7;font-size:0.9rem}
+
+/* ========== 代码示例 ========== */
+.code-modal{position:fixed;inset:0;z-index:1003;background:var(--bg-modal);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.3s;backdrop-filter:blur(10px)}
+.code-modal.active{opacity:1;visibility:visible}
+.code-content{background:var(--bg-card);border:1px solid var(--border-light);border-radius:20px;padding:2rem;max-width:600px;width:90%;box-shadow:var(--shadow-card);animation:modalIn 0.3s ease}
+.code-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.code-title{font-size:1.1rem;font-weight:700}
+.code-lang{padding:0.2rem 0.6rem;border-radius:8px;font-size:0.75rem;background:rgba(139,92,246,0.15);color:var(--accent-purple)}
+.code-block{background:rgba(0,0,0,0.4);border-radius:12px;padding:1rem;overflow-x:auto;margin-bottom:1rem;max-height:300px}
+[data-theme="light"] .code-block{background:rgba(0,0,0,0.08)}
+.code-block pre{margin:0;font-family:'Fira Code','Consolas',monospace;font-size:0.85rem;color:var(--accent-cyan);line-height:1.6;white-space:pre-wrap}
+[data-theme="light"] .code-block pre{color:#1e293b}
+.code-copy-btn{padding:0.5rem 1rem;border-radius:10px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));color:#fff;border:none;cursor:pointer;font-size:0.85rem;font-weight:600;transition:all 0.2s;width:100%}
+.code-copy-btn:hover{opacity:0.9;transform:scale(1.02)}
+.code-copy-btn.copied{background:var(--accent-green)}
+
+/* ========== 数据流滚动 ========== */
+.data-flow{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,rgba(10,14,23,0.95),transparent);overflow:hidden;z-index:1}
+[data-theme="light"] .data-flow{background:linear-gradient(to top,rgba(248,250,252,0.95),transparent)}
+.data-flow-track{display:flex;gap:1rem;animation:dataFlowScroll 30s linear infinite;white-space:nowrap;padding:0.5rem 0}
+@keyframes dataFlowScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}
+.data-item{display:flex;align-items:center;gap:0.3rem;padding:0.3rem 0.8rem;border-radius:20px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);font-size:0.75rem;color:var(--accent-blue)}
+.data-item.green{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.2);color:var(--accent-green)}
+.data-item.purple{background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:var(--accent-purple)}
+.data-item.cyan{background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.2);color:var(--accent-cyan)}
+.data-item-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* ========== 趋势预测 ========== */
+.predict-badge{display:inline-flex;align-items:center;gap:0.3rem;padding:0.2rem 0.5rem;border-radius:8px;font-size:0.7rem;background:rgba(139,92,246,0.15);color:var(--accent-purple);margin-left:0.5rem}
+
+/* ========== PDF导出优化 ========== */
+@media print{
+  nav,.ai-fab,.ai-panel,.guide-overlay,.loading-overlay,.chart-modal,.score-modal,.code-modal,.data-flow,.scroll-indicator,.filter-bar,.export-btn,.score-btn{display:none!important}
+  body{background:#fff;color:#1e293b}
+  .chart-card{background:#fff;border:1px solid #e5e7eb;page-break-inside:avoid}
+  .stat-card{background:#fff;border:1px solid #e5e7eb}
+  section{padding:2rem 1rem}
+  .hero-content{padding:2rem}
+  #particles-canvas{display:none}
+}
+
 @media(max-width:480px){
   .stats-grid{grid-template-columns:1fr}
   .features-grid{grid-template-columns:1fr}
   .time-range-bar{margin-left:0;margin-top:0.5rem}
   .chart-header{flex-wrap:wrap}
+  .score-modal,.code-modal{padding:1rem}
+  .score-content,.code-content{padding:1.5rem}
+  .scene-selector{gap:0.4rem}
+  .scene-btn{padding:0.4rem 0.8rem;font-size:0.78rem}
 }
 </style>
 </head>
@@ -310,6 +374,45 @@ footer .heart{color:var(--accent-pink)}
   </div>
 </div>
 
+<!-- 技术选型评分模态框 -->
+<div class="score-modal" id="scoreModal">
+  <div class="score-content">
+    <div class="score-header">
+      <span class="score-title">🎯 技术选型智能评分</span>
+      <button class="score-close" onclick="closeScoreModal()">✕</button>
+    </div>
+    <div class="scene-selector" id="sceneSelector">
+      <button class="scene-btn" data-scene="admin" onclick="selectScene('admin')">📊 中后台系统</button>
+      <button class="scene-btn" data-scene="frontend" onclick="selectScene('frontend')">🎨 大前端项目</button>
+      <button class="scene-btn" data-scene="mobile" onclick="selectScene('mobile')">📱 移动端开发</button>
+      <button class="scene-btn" data-scene="fullstack" onclick="selectScene('fullstack')">🚀 全栈应用</button>
+      <button class="scene-btn" data-scene="seo" onclick="selectScene('seo')">🔍 SEO优化</button>
+      <button class="scene-btn" data-scene="startup" onclick="selectScene('startup')">💡 初创项目</button>
+    </div>
+    <div class="score-result" id="scoreResult">
+      <div class="score-chart" id="scoreChart"></div>
+      <div class="score-recommend" id="scoreRecommend">
+        <div class="score-recommend-title">💡 推荐建议</div>
+        <div class="score-recommend-text" id="scoreRecommendText">选择一个场景后，AI 将根据该场景的需求特点，对各框架进行多维评分并给出推荐。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 代码示例模态框 -->
+<div class="code-modal" id="codeModal">
+  <div class="code-content">
+    <div class="code-header">
+      <span class="code-title" id="codeTitle">代码示例</span>
+      <span class="code-lang" id="codeLang">JavaScript</span>
+    </div>
+    <div class="code-block">
+      <pre id="codeContent"></pre>
+    </div>
+    <button class="code-copy-btn" id="codeCopyBtn" onclick="copyCode()">📋 一键复制代码</button>
+  </div>
+</div>
+
 <nav id="navbar">
   <div class="nav-logo">TechInsight</div>
   <ul class="nav-center">
@@ -340,6 +443,34 @@ footer .heart{color:var(--accent-pink)}
     </div>
   </div>
   <div class="scroll-indicator"><span></span></div>
+  <div class="data-flow">
+    <div class="data-flow-track" id="dataFlowTrack">
+      <span class="data-item"><span class="data-item-dot"></span>React +2.3%</span>
+      <span class="data-item green"><span class="data-item-dot"></span>Vue +1.8%</span>
+      <span class="data-item purple"><span class="data-item-dot"></span>Svelte +8.5%</span>
+      <span class="data-item cyan"><span class="data-item-dot"></span>Next.js +12K stars</span>
+      <span class="data-item"><span class="data-item-dot"></span>NPM 480万下载</span>
+      <span class="data-item green"><span class="data-item-dot"></span>性能提升95%</span>
+      <span class="data-item purple"><span class="data-item-dot"></span>Angular -1.2%</span>
+      <span class="data-item cyan"><span class="data-item-dot"></span>新增框架+8</span>
+      <span class="data-item"><span class="data-item-dot"></span>开发者+120万</span>
+      <span class="data-item green"><span class="data-item-dot"></span>React 93分</span>
+      <span class="data-item purple"><span class="data-item-dot"></span>Vue 85分</span>
+      <span class="data-item cyan"><span class="data-item-dot"></span>Svelte 60分</span>
+      <span class="data-item"><span class="data-item-dot"></span>GitHub 892K</span>
+      <span class="data-item green"><span class="data-item-dot"></span>社区活跃+23%</span>
+      <span class="data-item purple"><span class="data-item-dot"></span>Issue响应12h</span>
+      <span class="data-item cyan"><span class="data-item-dot"></span>健康度78%</span>
+      <span class="data-item"><span class="data-item-dot"></span>React +2.3%</span>
+      <span class="data-item green"><span class="data-item-dot"></span>Vue +1.8%</span>
+      <span class="data-item purple"><span class="data-item-dot"></span>Svelte +8.5%</span>
+      <span class="data-item cyan"><span class="data-item-dot"></span>Next.js +12K stars</span>
+      <span class="data-item"><span class="data-item-dot"></span>NPM 480万下载</span>
+      <span class="data-item green"><span class="data-item-dot"></span>性能提升95%</span>
+      <span class="data-item purple"><span class="data-item-dot"></span>Angular -1.2%</span>
+      <span class="data-item cyan"><span class="data-item-dot"></span>新增框架+8</span>
+    </div>
+  </div>
 </section>
 
 <section id="stats">
@@ -408,12 +539,13 @@ footer .heart{color:var(--accent-pink)}
       <span class="filter-dot" style="background:#ec4899"></span>
       <span class="filter-name">Nuxt</span>
     </div>
-    <button class="export-btn" onclick="exportReport()">📥 导出报告</button>
+    <button class="score-btn" onclick="openScoreModal()">🎯 智能评分</button>
+    <button class="export-btn" onclick="exportReport()">📥 导出PDF</button>
   </div>
   <div class="charts-grid">
     <div class="chart-card" data-delay="0" data-chart="trend" onclick="showChartDetail('trend')">
       <div class="chart-header">
-        <span class="chart-title">📈 前端框架趋势分析</span>
+        <span class="chart-title">📈 前端框架趋势分析<span class="predict-badge">🔮 含AI预测</span></span>
         <div style="display:flex;align-items:center;gap:0.5rem">
           <div class="time-range-bar">
             <button class="time-btn" data-range="3" onclick="switchTimeRange(3,this);event.stopPropagation()">近3年</button>
@@ -587,6 +719,7 @@ footer .heart{color:var(--accent-pink)}
     <button class="ai-quick-btn" onclick="askAi('2025年前端趋势？')">趋势预测</button>
     <button class="ai-quick-btn" onclick="askAi('Angular 还值得学吗？')">Angular 现状</button>
     <button class="ai-quick-btn special" onclick="generateCustomInsight()">🎯 生成我的洞察报告</button>
+    <button class="ai-quick-btn" onclick="showCodeExample(getFilteredFrameworks()[0]||'React')">📝 查看代码示例</button>
   </div>
   <div class="ai-input-bar">
     <input class="ai-input" id="aiInput" placeholder="输入你的技术问题..." onkeydown="if(event.key==='Enter')sendAiMessage()">
@@ -695,6 +828,167 @@ var guideSteps=[
   {icon:'🤖',title:'AI 智能助手',desc:'右下角的 AI 助手可回答技术选型问题，还能生成定制报告'}
 ];
 
+/* ========== 技术选型评分数据 ========== */
+var sceneData={
+  admin:{name:'中后台系统',desc:'表单密集、权限管理、数据表格场景',weights:{生态:0.25,开发体验:0.3,学习曲线:0.15,性能:0.1,就业市场:0.2}},
+  frontend:{name:'大前端项目',desc:'复杂交互、动画特效、用户体验优先',weights:{性能:0.35,开发体验:0.25,生态:0.15,学习曲线:0.15,就业市场:0.1}},
+  mobile:{name:'移动端开发',desc:'跨平台、包体积敏感、性能要求高',weights:{性能:0.4,包体积:0.25,学习曲线:0.15,生态:0.1,开发体验:0.1}},
+  fullstack:{name:'全栈应用',desc:'前后端一体化、SEO、服务端渲染',weights:{生态:0.25,SEO:0.25,开发体验:0.2,性能:0.15,学习曲线:0.15}},
+  seo:{name:'SEO优化',desc:'搜索引擎友好、页面渲染速度',weights:{SEO:0.4,性能:0.25,生态:0.15,开发体验:0.1,学习曲线:0.1}},
+  startup:{name:'初创项目',desc:'快速上线、低成本、易上手',weights:{学习曲线:0.35,开发体验:0.3,生态:0.2,性能:0.1,就业市场:0.05}}
+};
+
+var frameworkScores={
+  React:{生态:95,开发体验:88,学习曲线:70,性能:85,就业市场:95,SEO:60,包体积:75},
+  Vue:{生态:80,开发体验:90,学习曲线:85,性能:82,就业市场:72,SEO:65,包体积:78},
+  Angular:{生态:75,开发体验:70,学习曲线:40,性能:60,就业市场:60,SEO:55,包体积:55},
+  Svelte:{生态:45,开发体验:92,学习曲线:90,性能:95,就业市场:35,SEO:70,包体积:92},
+  'Next.js':{生态:85,开发体验:85,学习曲线:75,性能:80,就业市场:80,SEO:95,包体积:70},
+  Nuxt:{生态:70,开发体验:85,学习曲线:80,性能:78,就业市场:55,SEO:92,包体积:72}
+};
+
+var currentScene=null;
+var scoreChartInstance=null;
+
+/* ========== 代码示例数据 ========== */
+var codeTemplates={
+  React:{
+    title:'React 组件示例',
+    lang:'jsx',
+    code:`import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div className="counter">
+      <h1>计数器: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>
+        增加
+      </button>
+      <button onClick={() => setCount(count - 1)}>
+        减少
+      </button>
+    </div>
+  );
+}
+
+export default Counter;`
+  },
+  Vue:{
+    title:'Vue 组件示例',
+    lang:'vue',
+    code:`<template>
+  <div class="counter">
+    <h1>计数器: {{ count }}</h1>
+    <button @click="increment">增加</button>
+    <button @click="decrement">减少</button>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const count = ref(0);
+const increment = () => count.value++;
+const decrement = () => count.value--;
+</script>`
+  },
+  Angular:{
+    title:'Angular 组件示例',
+    lang:'typescript',
+    code:`import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-counter',
+  template: \`
+    <div class="counter">
+      <h1>计数器: {{ count }}</h1>
+      <button (click)="increment()">增加</button>
+      <button (click)="decrement()">减少</button>
+    </div>
+  \`
+})
+export class CounterComponent {
+  count = 0;
+  
+  increment() { this.count++; }
+  decrement() { this.count--; }
+}`
+  },
+  Svelte:{
+    title:'Svelte 组件示例',
+    lang:'svelte',
+    code:`<script>
+  let count = 0;
+</script>
+
+<div class="counter">
+  <h1>计数器: {count}</h1>
+  <button on:click={() => count++}>增加</button>
+  <button on:click={() => count--}>减少</button>
+</div>
+
+<style>
+  .counter { padding: 20px; }
+</style>`
+  },
+  'Next.js':{
+    title:'Next.js 页面示例',
+    lang:'jsx',
+    code:`import { useState } from 'react';
+
+export default function Home() {
+  const [data, setData] = useState(null);
+  
+  // 服务端数据获取
+  const fetchData = async () => {
+    const res = await fetch('/api/data');
+    const json = await res.json();
+    setData(json);
+  };
+  
+  return (
+    <div>
+      <h1>Next.js 应用</h1>
+      <button onClick={fetchData}>获取数据</button>
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+    </div>
+  );
+}`
+  },
+  Nuxt:{
+    title:'Nuxt 页面示例',
+    lang:'vue',
+    code:`<template>
+  <div>
+    <h1>Nuxt 应用</h1>
+    <button @click="fetchData">获取数据</button>
+    <pre v-if="data">{{ data }}</pre>
+  </div>
+</template>
+
+<script setup>
+const data = ref(null);
+
+const fetchData = async () => {
+  const res = await useFetch('/api/data');
+  data.value = res.data.value;
+};
+</script>`
+  }
+};
+
+/* ========== 趋势预测数据 ========== */
+var trendPredict={
+  years:['2019','2020','2021','2022','2023','2024','2025','2026预测','2027预测'],
+  React:[72,78,85,88,90,92,93,94,95],
+  Vue:[58,65,72,76,80,82,85,88,90],
+  Angular:[45,42,40,38,36,35,34,32,30],
+  Svelte:[8,15,25,35,45,52,60,68,75],
+  predict:['2026预测','2027预测']
+};
+
 /* ========== 加载动画 ========== */
 setTimeout(function(){
   document.getElementById('loadingOverlay').classList.add('hidden');
@@ -774,37 +1068,178 @@ document.getElementById('chartModal').addEventListener('click',function(e){
 
 /* ========== 导出报告 ========== */
 function exportReport(){
+  // 使用浏览器打印功能导出 PDF
+  var printContent=document.body.innerHTML;
   var fws=getFilteredFrameworks();
-  var reportHTML='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>TechInsight 分析报告</title><style>body{font-family:sans-serif;background:#f5f5f5;padding:40px}h1{color:#3b82f6}h2{color:#1e293b;margin-top:30px}.section{background:#fff;padding:20px;border-radius:12px;margin:20px 0;box-shadow:0 2px 10px rgba(0,0,0,0.1)}.metric{display:inline-block;padding:8px 16px;background:#e0f2fe;border-radius:8px;margin:5px;color:#0369a1}.footer{text-align:center;color:#64748b;margin-top:40px}</style></head><body>';
-  reportHTML+='<h1>TechInsight 技术分析报告</h1>';
-  reportHTML+='<p>生成时间：'+new Date().toLocaleString()+'</p>';
-  reportHTML+='<p>筛选框架：'+(fws.length?fws.join('、'):'全部')+'</p>';
-  reportHTML+='<div class="section"><h2>数据概览</h2>';
-  reportHTML+='<span class="metric">NPM周下载量：284.7万</span>';
-  reportHTML+='<span class="metric">GitHub Stars：892K</span>';
-  reportHTML+='<span class="metric">主流框架：156+</span>';
-  reportHTML+='<span class="metric">全球开发者：4280万</span></div>';
-  reportHTML+='<div class="section"><h2>框架对比</h2>';
-  fws.forEach(function(fw){
-    var star=compareData.stars[compareData.categories.indexOf(fw)]||0;
-    var dl=compareData.downloads[compareData.categories.indexOf(fw)]||0;
-    reportHTML+='<span class="metric">'+fw+': Stars '+star+'K, NPM '+dl+'万/周</span>';
-  });
-  reportHTML+='</div>';
-  reportHTML+='<div class="section"><h2>趋势洞察</h2>';
-  reportHTML+='<p>• React：生态成熟，就业市场最强，适合大型项目</p>';
-  reportHTML+='<p>• Vue：学习曲线友好，下载量最高，适合快速开发</p>';
-  reportHTML+='<p>• Svelte：性能最优，增速最快，适合追求极致性能</p>';
-  reportHTML+='<p>• Angular：企业级方案完整，但热度下滑需关注</p></div>';
-  reportHTML+='<div class="footer">TechInsight 技术洞察 | TRAE AI 创造力大赛参赛作品</div></body></html>';
   
-  var blob=new Blob([reportHTML],{type:'text/html'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-  a.href=url;
-  a.download='TechInsight_Report_'+new Date().toISOString().slice(0,10)+'.html';
-  a.click();
-  URL.revokeObjectURL(url);
+  // 添加打印标题和说明
+  var printHeader='<div style="text-align:center;padding:20px;background:#fff;color:#1e293b"><h1 style="color:#3b82f6">TechInsight 技术分析报告</h1><p style="color:#64748b">生成时间：'+new Date().toLocaleString()+' | 筛选框架：'+(fws.length?fws.join('、'):'全部')+'</p></div>';
+  
+  // 创建临时打印窗口
+  var printWindow=window.open('','_blank');
+  printWindow.document.write('<html><head><title>TechInsight 分析报告</title>');
+  printWindow.document.write('<style>');
+  printWindow.document.write('body{font-family:sans-serif;background:#fff;color:#1e293b;padding:20px}');
+  printWindow.document.write('.chart-card{background:#fff;border:1px solid #e5e7eb;margin:15px 0;padding:15px;border-radius:8px;page-break-inside:avoid}');
+  printWindow.document.write('.stat-card{background:#fff;border:1px solid #e5e7eb}');
+  printWindow.document.write('.section-header{text-align:center;margin:30px 0}');
+  printWindow.document.write('.section-title{color:#1e293b;font-size:1.8rem}');
+  printWindow.document.write('.section-desc{color:#64748b}');
+  printWindow.document.write('.section-tag{display:none}');
+  printWindow.document.write('.stat-number{color:#3b82f6;font-size:2rem}');
+  printWindow.document.write('.stat-label{color:#64748b}');
+  printWindow.document.write('.stat-change{color:#10b981}');
+  printWindow.document.write('.stat-icon{font-size:2rem}');
+  printWindow.document.write('.chart-title{color:#1e293b;font-size:1.1rem;font-weight:bold}');
+  printWindow.document.write('.chart-tag,.chart-click-hint{display:none}');
+  printWindow.document.write('.time-range-bar,.filter-bar,.export-btn,.score-btn{display:none}');
+  printWindow.document.write('.chart-container{height:280px}');
+  printWindow.document.write('.case-card,.feature-card{background:#fff;border:1px solid #e5e7eb;padding:15px;margin:10px 0;border-radius:8px}');
+  printWindow.document.write('.case-desc,.feature-desc{color:#64748b}');
+  printWindow.document.write('.case-metric{background:#e0f2fe;color:#0369a1;padding:4px 8px;border-radius:4px;font-size:0.8rem}');
+  printWindow.document.write('.footer{text-align:center;color:#64748b;padding:20px;border-top:1px solid #e5e7eb}');
+  printWindow.document.write('h1,h2,h3{color:#1e293b}');
+  printWindow.document.write('@media print{.chart-card,.stat-card,.case-card,.feature-card{page-break-inside:avoid}}');
+  printWindow.document.write('</style>');
+  printWindow.document.write('</head><body>');
+  printWindow.document.write(printHeader);
+  printWindow.document.write('<main>');
+  
+  // 只保留核心内容区域
+  var mainSections=document.querySelectorAll('#stats,#charts,#cases,#features');
+  mainSections.forEach(function(section){
+    printWindow.document.write(section.outerHTML);
+  });
+  
+  printWindow.document.write('</main>');
+  printWindow.document.write('<footer style="text-align:center;color:#64748b;padding:30px;border-top:1px solid #e5e7eb">TechInsight 技术洞察 | TRAE AI 创造力大赛参赛作品</footer>');
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+  
+  // 延迟打印确保内容加载完成
+  setTimeout(function(){
+    printWindow.print();
+    printWindow.close();
+  },500);
+}
+
+/* ========== 技术选型评分功能 ========== */
+function openScoreModal(){
+  document.getElementById('scoreModal').classList.add('active');
+  if(!scoreChartInstance){
+    scoreChartInstance=echarts.init(document.getElementById('scoreChart'));
+  }
+}
+
+function closeScoreModal(){
+  document.getElementById('scoreModal').classList.remove('active');
+}
+
+function selectScene(scene){
+  currentScene=scene;
+  document.querySelectorAll('.scene-btn').forEach(function(btn){
+    btn.classList.toggle('active',btn.getAttribute('data-scene')===scene);
+  });
+  
+  // 计算各框架得分
+  var weights=sceneData[scene].weights;
+  var scores=[];
+  var frameworks=['React','Vue','Angular','Svelte','Next.js','Nuxt'];
+  var colors=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#06b6d4','#ec4899'];
+  
+  frameworks.forEach(function(fw,i){
+    var total=0;
+    for(var dim in weights){
+      var fwScore=frameworkScores[fw][dim]||0;
+      total+=fwScore*weights[dim];
+    }
+    scores.push({
+      name:fw,
+      score:Math.round(total),
+      color:colors[i]
+    });
+  });
+  
+  // 排序
+  scores.sort(function(a,b){return b.score-a.score});
+  
+  // 更新图表
+  scoreChartInstance.setOption({
+    backgroundColor:currentTheme==='dark'?'transparent':'#ffffff',
+    tooltip:{trigger:'axis',formatter:function(p){return p[0].name+'<br/>综合评分：'+p[0].value+'分'}},
+    grid:{left:'3%',right:'4%',bottom:'3%',containLabel:true},
+    xAxis:{type:'category',data:scores.map(function(s){return s.name}),axisLine:{lineStyle:{color:currentTheme==='dark'?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.1)'}}},
+    yAxis:{type:'value',max:100,name:'综合评分',axisLine:{lineStyle:{color:currentTheme==='dark'?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.1)'}}},
+    series:[{
+      type:'bar',
+      data:scores.map(function(s){return {value:s.score,itemStyle:{color:s.color,borderRadius:[6,6,0,0]}}}),
+      barWidth:40,
+      label:{show:true,position:'top',formatter:'{c}分',color:currentTheme==='dark'?'#e2e8f0':'#1e293b'}
+    }],
+    animationDuration:800
+  });
+  
+  // 更新推荐
+  var top=scores[0];
+  var second=scores[1];
+  var recommendText='针对<strong>'+sceneData[scene].name+'</strong>场景（'+sceneData[scene].desc+'），推荐：<br><br>';
+  recommendText+='<strong style="color:'+top.color+'">'+top.name+'</strong> 综合得分 '+top.score+' 分，是最佳选择。<br>';
+  recommendText+='备选：<strong style="color:'+second.color+'">'+second.name+'</strong>（'+second.score+' 分）。<br><br>';
+  
+  // 添加场景特定建议
+  if(scene==='admin'){
+    recommendText+='💡 中后台系统优先考虑开发体验和生态成熟度，React 的生态最丰富，适合复杂表单和权限管理。';
+  }else if(scene==='frontend'){
+    recommendText+='💡 大前端项目优先考虑性能和用户体验，Svelte 性能最优，React 生态最成熟。';
+  }else if(scene==='mobile'){
+    recommendText+='💡 移动端开发关注包体积和性能，Svelte 包体积最小（仅8KB），是最优选择。';
+  }else if(scene==='fullstack'){
+    recommendText+='💡 全栈应用需要 SEO 和服务端渲染，Next.js 是 React 生态的最佳方案。';
+  }else if(scene==='seo'){
+    recommendText+='💡 SEO 优化场景，Next.js 和 Nuxt 提供最佳的服务端渲染支持。';
+  }else if(scene==='startup'){
+    recommendText+='💡 初创项目需要快速上线，Vue 学习曲线最友好，开发效率最高。';
+  }
+  
+  document.getElementById('scoreRecommendText').innerHTML=recommendText;
+}
+
+// 点击模态框背景关闭
+document.getElementById('scoreModal').addEventListener('click',function(e){
+  if(e.target===this)closeScoreModal();
+});
+
+document.getElementById('codeModal').addEventListener('click',function(e){
+  if(e.target===this)closeCodeModal();
+});
+
+/* ========== 代码示例功能 ========== */
+function showCodeExample(fw){
+  var template=codeTemplates[fw];
+  if(!template)return;
+  
+  document.getElementById('codeTitle').textContent=template.title;
+  document.getElementById('codeLang').textContent=template.lang;
+  document.getElementById('codeContent').textContent=template.code;
+  document.getElementById('codeCopyBtn').textContent='📋 一键复制代码';
+  document.getElementById('codeCopyBtn').classList.remove('copied');
+  document.getElementById('codeModal').classList.add('active');
+}
+
+function closeCodeModal(){
+  document.getElementById('codeModal').classList.remove('active');
+}
+
+function copyCode(){
+  var code=document.getElementById('codeContent').textContent;
+  navigator.clipboard.writeText(code).then(function(){
+    document.getElementById('codeCopyBtn').textContent='✅ 已复制到剪贴板';
+    document.getElementById('codeCopyBtn').classList.add('copied');
+    setTimeout(function(){
+      document.getElementById('codeCopyBtn').textContent='📋 一键复制代码';
+      document.getElementById('codeCopyBtn').classList.remove('copied');
+    },2000);
+  });
 }
 
 /* ========== 框架筛选 ========== */
@@ -1159,25 +1594,51 @@ var themeConfig={
   yAxis:{axisLine:{lineStyle:{color:currentTheme==='dark'?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.1)'}},axisLabel:{color:currentTheme==='dark'?'#94a3b8':'#64748b'},splitLine:{lineStyle:{color:currentTheme==='dark'?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'}}}
 };
 
-// 趋势图
+// 趋势图（含预测）
 (function(){
   var chart=echarts.init(document.getElementById('chart-trend'));
   chartInstances.trend=chart;
+  
+  // 历史数据和预测数据
+  var allYears=trendPredict.years;
+  var histYears=allYears.slice(0,7);  // 2019-2025
+  var predYears=allYears.slice(7);    // 2026-2027
+  
   chart.setOption({
     ...themeConfig,
     tooltip:{trigger:'axis',...themeConfig.tooltip},
     legend:{data:['React','Vue','Angular','Svelte'],...themeConfig.legend,top:0},
     grid:{left:'3%',right:'4%',bottom:'3%',containLabel:true},
-    xAxis:{type:'category',boundaryGap:false,data:trendData.years,...themeConfig.xAxis},
+    xAxis:{type:'category',boundaryGap:false,data:allYears,...themeConfig.xAxis},
     yAxis:{type:'value',name:'搜索热度',nameTextStyle:{color:themeConfig.textStyle.color},...themeConfig.yAxis},
     series:[
-      {name:'React',type:'line',smooth:true,data:trendData.React,lineStyle:{width:3},itemStyle:{color:'#3b82f6'},areaStyle:{color:'rgba(59,130,246,0.3)'},symbol:'circle',symbolSize:6},
-      {name:'Vue',type:'line',smooth:true,data:trendData.Vue,lineStyle:{width:3},itemStyle:{color:'#10b981'},areaStyle:{color:'rgba(16,185,129,0.3)'},symbol:'circle',symbolSize:6},
-      {name:'Angular',type:'line',smooth:true,data:trendData.Angular,lineStyle:{width:3},itemStyle:{color:'#f59e0b'},areaStyle:{color:'rgba(245,158,11,0.3)'},symbol:'circle',symbolSize:6},
-      {name:'Svelte',type:'line',smooth:true,data:trendData.Svelte,lineStyle:{width:3},itemStyle:{color:'#8b5cf6'},areaStyle:{color:'rgba(139,92,246,0.3)'},symbol:'circle',symbolSize:6}
+      // React 历史数据
+      {name:'React',type:'line',smooth:true,data:trendPredict.React.slice(0,7),lineStyle:{width:3},itemStyle:{color:'#3b82f6'},areaStyle:{color:'rgba(59,130,246,0.15)'},symbol:'circle',symbolSize:6},
+      // React 预测数据（虚线）
+      {name:'React预测',type:'line',smooth:true,data:[...Array(6).fill(null),trendPredict.React[6],...trendPredict.React.slice(7)],lineStyle:{width:2,type:'dashed'},itemStyle:{color:'#3b82f6'},symbol:'circle',symbolSize:4},
+      // Vue
+      {name:'Vue',type:'line',smooth:true,data:trendPredict.Vue.slice(0,7),lineStyle:{width:3},itemStyle:{color:'#10b981'},areaStyle:{color:'rgba(16,185,129,0.15)'},symbol:'circle',symbolSize:6},
+      {name:'Vue预测',type:'line',smooth:true,data:[...Array(6).fill(null),trendPredict.Vue[6],...trendPredict.Vue.slice(7)],lineStyle:{width:2,type:'dashed'},itemStyle:{color:'#10b981'},symbol:'circle',symbolSize:4},
+      // Angular
+      {name:'Angular',type:'line',smooth:true,data:trendPredict.Angular.slice(0,7),lineStyle:{width:3},itemStyle:{color:'#f59e0b'},areaStyle:{color:'rgba(245,158,11,0.15)'},symbol:'circle',symbolSize:6},
+      {name:'Angular预测',type:'line',smooth:true,data:[...Array(6).fill(null),trendPredict.Angular[6],...trendPredict.Angular.slice(7)],lineStyle:{width:2,type:'dashed'},itemStyle:{color:'#f59e0b'},symbol:'circle',symbolSize:4},
+      // Svelte
+      {name:'Svelte',type:'line',smooth:true,data:trendPredict.Svelte.slice(0,7),lineStyle:{width:3},itemStyle:{color:'#8b5cf6'},areaStyle:{color:'rgba(139,92,246,0.15)'},symbol:'circle',symbolSize:6},
+      {name:'Svelte预测',type:'line',smooth:true,data:[...Array(6).fill(null),trendPredict.Svelte[6],...trendPredict.Svelte.slice(7)],lineStyle:{width:2,type:'dashed'},itemStyle:{color:'#8b5cf6'},symbol:'circle',symbolSize:4},
+      // 预测区域背景
+      {type:'line',markArea:{silent:true,itemStyle:{color:'rgba(139,92,246,0.08)',borderColor:'rgba(139,92,246,0.3)',borderWidth:1},data:[[{xAxis:'2026预测'}, {xAxis:'2027预测'}]]},data:[]}
     ],
     animationDuration:2000
   });
+  
+  // 隐藏预测系列的 legend
+  setTimeout(function(){
+    chart.dispatchAction({type:'legendUnSelect',name:'React预测'});
+    chart.dispatchAction({type:'legendUnSelect',name:'Vue预测'});
+    chart.dispatchAction({type:'legendUnSelect',name:'Angular预测'});
+    chart.dispatchAction({type:'legendUnSelect',name:'Svelte预测'});
+  },100);
+  
   window.addEventListener('resize',function(){chart.resize()});
 })();
 
