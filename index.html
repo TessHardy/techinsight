@@ -2,7 +2,46 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0a0e17">
+<meta name="description" content="TechInsight 技术洞察 - 一站式前端技术分析可视化平台。7种ECharts图表、智能评分、AI助手、PK擂台、运势占卜、学习路径规划、全球开发者地图。让数据驱动你的技术选型。">
+<meta name="keywords" content="前端框架,React,Vue,Angular,Svelte,技术选型,可视化,ECharts,AI助手,技术分析,GitHub Stars,NPM下载,前端开发,2026">
+<meta name="author" content="TessHardy">
+<meta name="robots" content="index,follow">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tesshardy.github.io/techinsight/">
+<meta property="og:title" content="TechInsight 技术洞察 - 数据驱动的技术选型平台">
+<meta property="og:description" content="7种图表×6种框架×5大互动玩法，10分钟做出1小时的分析。AI智能评分、PK擂台、运势占卜、全球开发者地图一应俱全。">
+<meta property="og:site_name" content="TechInsight">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20tech%20analytics%20dashboard%20hero%20section%20with%20multiple%20charts%2C%20dark%20blue%20purple%20gradient%2C%20particle%20effects%2C%20glassmorphism%20UI%2C%20futuristic%20design&image_size=landscape_16_9">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://tesshardy.github.io/techinsight/">
+<meta name="twitter:title" content="TechInsight 技术洞察">
+<meta name="twitter:description" content="数据驱动的技术选型平台。10分钟做完1小时的分析。">
+<meta name="twitter:image" content="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20tech%20analytics%20dashboard%20hero%20section%20with%20multiple%20charts%2C%20dark%20blue%20purple%20gradient%2C%20particle%20effects%2C%20glassmorphism%20UI&image_size=landscape_16_9">
+
+<!-- JSON-LD 结构化数据 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "TechInsight 技术洞察",
+  "description": "一站式前端技术分析可视化平台",
+  "url": "https://tesshardy.github.io/techinsight/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@type": "Person", "name": "TessHardy"}
+}
+</script>
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9A%80%3C/text%3E%3C/svg%3E">
+
 <title>TechInsight 技术洞察 - 一站式技术分析可视化平台</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
@@ -118,7 +157,8 @@ section{padding:5rem 2rem}
 /* ========== 筛选栏 ========== */
 .filter-bar{display:flex;align-items:center;justify-content:center;gap:0.8rem;flex-wrap:wrap;max-width:1400px;margin:0 auto 2rem;padding:1rem 1.5rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px}
 .filter-bar .filter-label{color:var(--text-secondary);font-size:0.85rem;font-weight:600;margin-right:0.5rem;white-space:nowrap}
-.filter-item{display:flex;align-items:center;gap:0.4rem;padding:0.4rem 0.9rem;border-radius:20px;cursor:pointer;transition:all 0.3s;border:1px solid transparent;user-select:none;font-size:0.85rem}
+.filter-item{display:flex;align-items:center;gap:0.4rem;padding:0.4rem 0.9rem;border-radius:20px;cursor:pointer;transition:all 0.3s;border:1px solid transparent;user-select:none;font-size:0.85rem;background:transparent;color:var(--text-primary);font-family:inherit}
+.filter-item:focus-visible{outline:2px solid var(--accent-cyan);outline-offset:2px}
 .filter-item:hover{background:rgba(255,255,255,0.05)}
 [data-theme="light"] .filter-item:hover{background:rgba(0,0,0,0.05)}
 .filter-item.active{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.05)}
@@ -311,6 +351,56 @@ footer .heart{color:var(--accent-pink)}
 
 /* ========== 返回顶部火箭 ========== */
 .back-to-top{position:fixed;bottom:8rem;right:2rem;z-index:998;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;box-shadow:0 4px 16px rgba(245,158,11,0.4);transition:all 0.3s;opacity:0;visibility:hidden;transform:translateY(20px)}
+
+/* ========== 键盘快捷键 ========== */
+.shortcuts-panel{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:10000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.2s}
+.shortcuts-panel.visible{opacity:1;visibility:visible}
+.shortcuts-content{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;transform:scale(0.9);transition:transform 0.2s;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.shortcuts-panel.visible .shortcuts-content{transform:scale(1)}
+.shortcuts-header{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-color)}
+.shortcuts-header h3{margin:0;font-size:1.2rem}
+.shortcuts-close{background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:1.2rem;padding:0.3rem 0.6rem;border-radius:6px;transition:all 0.2s}
+.shortcuts-close:hover{background:rgba(255,255,255,0.1);color:var(--text-primary)}
+.shortcuts-grid{padding:1rem 1.5rem;display:grid;gap:0.4rem}
+.shortcut-row{display:flex;align-items:center;gap:0.8rem;padding:0.5rem 0.8rem;border-radius:6px;font-size:0.85rem;transition:background 0.2s}
+.shortcut-row:hover{background:rgba(255,255,255,0.04)}
+.shortcut-row span{flex:1;color:var(--text-secondary)}
+.shortcut-row kbd{display:inline-block;padding:0.2rem 0.5rem;background:rgba(255,255,255,0.08);border:1px solid var(--border-color);border-radius:4px;font-family:'Fira Code','Consolas',monospace;font-size:0.75rem;color:var(--accent-cyan);min-width:1.5rem;text-align:center}
+[data-theme="light"] .shortcut-row kbd{background:rgba(0,0,0,0.05)}
+.shortcuts-footer{padding:0.8rem 1.5rem;border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-secondary);text-align:center}
+
+/* ========== 浮动提示 toast ========== */
+.toast{position:fixed;top:5rem;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--bg-card);border:1px solid var(--accent-blue);padding:0.6rem 1.2rem;border-radius:30px;font-size:0.85rem;color:var(--text-primary);box-shadow:0 4px 20px rgba(59,130,246,0.3);opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;white-space:nowrap}
+.toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast .toast-key{color:var(--accent-cyan);font-weight:700;margin:0 0.2rem}
+
+/* ========== a11y 跳转链接 ========== */
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--accent-blue);color:#fff;padding:0.6rem 1.2rem;z-index:10001;border-radius:0 0 8px 0;font-weight:600;transition:left 0.2s}
+.skip-link:focus{left:0;outline:2px solid var(--accent-cyan);outline-offset:2px}
+
+/* ========== 多框架对比 ========== */
+.multi-compare-modal{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:10000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.2s;padding:1rem}
+.multi-compare-modal.visible{opacity:1;visibility:visible}
+.multi-compare-content{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;max-width:800px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(0.9);transition:transform 0.2s}
+.multi-compare-modal.visible .multi-compare-content{transform:scale(1)}
+.multi-compare-header{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-color)}
+.multi-compare-header h3{margin:0;font-size:1.2rem}
+.multi-compare-close{background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:1.3rem;padding:0.3rem 0.6rem;border-radius:6px;transition:all 0.2s}
+.multi-compare-close:hover{background:rgba(255,255,255,0.1);color:var(--text-primary)}
+.multi-compare-body{padding:1.5rem}
+.multi-compare-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem}
+.mc-tag{padding:0.4rem 0.8rem;border-radius:20px;border:1px solid var(--border-color);background:rgba(255,255,255,0.03);cursor:pointer;font-size:0.85rem;transition:all 0.2s;user-select:none}
+.mc-tag:hover{background:rgba(255,255,255,0.08)}
+.mc-tag.selected{background:rgba(139,92,246,0.2);border-color:#8b5cf6;color:#8b5cf6}
+.multi-compare-chart{border-radius:12px;background:rgba(0,0,0,0.2);padding:0.5rem}
+
+/* ========== 减少动画偏好 ========== */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
+}
+
+/* ========== 屏幕阅读器专用 ========== */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
 .back-to-top:hover{transform:translateY(-4px) scale(1.1);box-shadow:0 6px 24px rgba(245,158,11,0.6)}
 .back-to-top::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);opacity:0.4;animation:rocketPulse 2s ease infinite;z-index:-1}
@@ -572,6 +662,22 @@ footer .heart{color:var(--accent-pink)}
 </div>
 
 <!-- 代码示例模态框 -->
+<div class="multi-compare-modal" id="multiCompareModal" role="dialog" aria-label="多框架对比" aria-modal="true">
+  <div class="multi-compare-content">
+    <div class="multi-compare-header">
+      <h3>🔮 多框架雷达对比</h3>
+      <button class="multi-compare-close" onclick="closeMultiCompare()" aria-label="关闭">✕</button>
+    </div>
+    <div class="multi-compare-body">
+      <div class="multi-compare-selector">
+        <p style="margin-bottom:0.8rem;font-size:0.9rem">选择 2-6 个框架进行雷达对比：</p>
+        <div class="multi-compare-tags" id="multiCompareTags"></div>
+      </div>
+      <div class="multi-compare-chart" id="multiCompareChart" style="height:400px"></div>
+    </div>
+  </div>
+</div>
+
 <div class="code-modal" id="codeModal">
   <div class="code-content">
     <div class="code-header">
@@ -691,32 +797,32 @@ footer .heart{color:var(--accent-pink)}
     <h2 class="section-title">多维度技术洞察</h2>
     <p class="section-desc">从趋势、对比、分布、评估等多个视角深度解析技术生态<br><span style="font-size:0.85rem;opacity:0.7">点击图表查看详细分析</span></p>
   </div>
-  <div class="filter-bar" id="filterBar">
+  <div class="filter-bar" id="filterBar" role="toolbar" aria-label="框架筛选器">
     <span class="filter-label">🔍 筛选：</span>
-    <div class="filter-item active" data-framework="React" onclick="toggleFilter(this)">
-      <span class="filter-dot" style="background:#3b82f6"></span>
+    <button class="filter-item active" data-framework="React" onclick="toggleFilter(this)" aria-pressed="true" aria-label="React 筛选器">
+      <span class="filter-dot" style="background:#3b82f6" aria-hidden="true"></span>
       <span class="filter-name">React</span>
-    </div>
-    <div class="filter-item active" data-framework="Vue" onclick="toggleFilter(this)">
-      <span class="filter-dot" style="background:#10b981"></span>
+    </button>
+    <button class="filter-item active" data-framework="Vue" onclick="toggleFilter(this)" aria-pressed="true" aria-label="Vue 筛选器">
+      <span class="filter-dot" style="background:#10b981" aria-hidden="true"></span>
       <span class="filter-name">Vue</span>
-    </div>
-    <div class="filter-item active" data-framework="Angular" onclick="toggleFilter(this)">
-      <span class="filter-dot" style="background:#f59e0b"></span>
+    </button>
+    <button class="filter-item active" data-framework="Angular" onclick="toggleFilter(this)" aria-pressed="true" aria-label="Angular 筛选器">
+      <span class="filter-dot" style="background:#f59e0b" aria-hidden="true"></span>
       <span class="filter-name">Angular</span>
-    </div>
-    <div class="filter-item active" data-framework="Svelte" onclick="toggleFilter(this)">
-      <span class="filter-dot" style="background:#8b5cf6"></span>
+    </button>
+    <button class="filter-item active" data-framework="Svelte" onclick="toggleFilter(this)" aria-pressed="true" aria-label="Svelte 筛选器">
+      <span class="filter-dot" style="background:#8b5cf6" aria-hidden="true"></span>
       <span class="filter-name">Svelte</span>
-    </div>
-    <div class="filter-item active" data-framework="Next.js" onclick="toggleFilter(this)">
-      <span class="filter-dot" style="background:#06b6d4"></span>
+    </button>
+    <button class="filter-item active" data-framework="Next.js" onclick="toggleFilter(this)" aria-pressed="true" aria-label="Next.js 筛选器">
+      <span class="filter-dot" style="background:#06b6d4" aria-hidden="true"></span>
       <span class="filter-name">Next.js</span>
-    </div>
-    <div class="filter-item active" data-framework="Nuxt" onclick="toggleFilter(this)">
-      <span class="filter-dot" style="background:#ec4899"></span>
+    </button>
+    <button class="filter-item active" data-framework="Nuxt" onclick="toggleFilter(this)" aria-pressed="true" aria-label="Nuxt 筛选器">
+      <span class="filter-dot" style="background:#ec4899" aria-hidden="true"></span>
       <span class="filter-name">Nuxt</span>
-    </div>
+    </button>
     <button class="score-btn" onclick="openScoreModal()">🎯 智能评分</button>
     <button class="export-btn" onclick="exportReport()">📥 导出PDF</button>
   </div>
@@ -808,6 +914,7 @@ footer .heart{color:var(--accent-pink)}
     <div class="pk-controls">
       <button class="pk-btn" onclick="pkRandom()">🎲 随机 PK</button>
       <button class="pk-btn secondary" onclick="pkReset()">🔄 重置</button>
+      <button class="pk-btn" style="background:linear-gradient(135deg,#8b5cf6,#ec4899)" onclick="openMultiCompare()">🔮 多框架雷达</button>
       <select id="pkSelectRed" onchange="pkChangeFw('red',this.value)" style="padding:0.5rem 1rem;border-radius:8px;background:rgba(255,255,255,0.1);color:var(--text-primary);border:1px solid var(--border-color);margin:0 0.3rem">
         <option value="React">🔴 React</option>
         <option value="Vue">🔴 Vue</option>
@@ -1143,7 +1250,34 @@ footer .heart{color:var(--accent-pink)}
   <span class="rocket-icon">🚀</span>
 </button>
 
-<button class="ai-fab" id="aiFab" onclick="openAiPanel()">🤖</button>
+<button class="ai-fab" id="aiFab" onclick="openAiPanel()" aria-label="打开 AI 助手">🤖</button>
+
+<div class="shortcuts-panel" id="shortcutsPanel" role="dialog" aria-label="键盘快捷键" aria-modal="true">
+  <div class="shortcuts-content">
+    <div class="shortcuts-header">
+      <h3>⌨️ 键盘快捷键</h3>
+      <button class="shortcuts-close" onclick="toggleShortcuts()" aria-label="关闭">✕</button>
+    </div>
+    <div class="shortcuts-grid">
+      <div class="shortcut-row"><kbd>?</kbd><span>显示 / 隐藏快捷键面板</span></div>
+      <div class="shortcut-row"><kbd>G</kbd> + <kbd>H</kbd><span>回到首页</span></div>
+      <div class="shortcut-row"><kbd>G</kbd> + <kbd>C</kbd><span>跳到图表分析</span></div>
+      <div class="shortcut-row"><kbd>G</kbd> + <kbd>P</kbd><span>跳到 PK 擂台</span></div>
+      <div class="shortcut-row"><kbd>G</kbd> + <kbd>F</kbd><span>跳到运势占卜</span></div>
+      <div class="shortcut-row"><kbd>G</kbd> + <kbd>J</kbd><span>跳到就业市场</span></div>
+      <div class="shortcut-row"><kbd>A</kbd><span>打开 AI 助手</span></div>
+      <div class="shortcut-row"><kbd>T</kbd><span>切换主题</span></div>
+      <div class="shortcut-row"><kbd>S</kbd><span>评分（智能评分）</span></div>
+      <div class="shortcut-row"><kbd>E</kbd><span>导出报告</span></div>
+      <div class="shortcut-row"><kbd>R</kbd><span>随机 PK</span></div>
+      <div class="shortcut-row"><kbd>↑</kbd><span>返回顶部</span></div>
+      <div class="shortcut-row"><kbd>Esc</kbd><span>关闭弹窗</span></div>
+    </div>
+    <div class="shortcuts-footer">💡 提示：按 <kbd>?</kbd> 随时调出此面板</div>
+  </div>
+</div>
+
+<a href="#main" class="skip-link" tabindex="0">跳到主内容</a>
 
 <div class="ai-panel" id="aiPanel">
   <div class="ai-panel-header">
@@ -1710,11 +1844,20 @@ function toggleFilter(el){
   if(activeFilters[fw]){
     el.classList.add('active');
     el.classList.remove('inactive');
+    el.setAttribute('aria-pressed','true');
   }else{
     el.classList.remove('active');
     el.classList.add('inactive');
+    el.setAttribute('aria-pressed','false');
   }
   updateAllCharts();
+  syncFiltersToUrl();
+}
+function syncFiltersToUrl(){
+  var active=Object.keys(activeFilters).filter(function(k){return activeFilters[k]});
+  if(active.length>0&&active.length<6){
+    history.replaceState(null,'','#filters='+active.join(','));
+  }
 }
 
 function switchTimeRange(years,btn){
@@ -2018,6 +2161,115 @@ function scrollToTop(){
   });
 })();
 
+/* ========== 键盘快捷键 ========== */
+var gPressed=false;
+var gTimer=null;
+function toggleShortcuts(){
+  var p=document.getElementById('shortcutsPanel');
+  if(p)p.classList.toggle('visible');
+}
+function showToast(html,duration){
+  duration=duration||1800;
+  var t=document.createElement('div');
+  t.className='toast';
+  t.innerHTML=html;
+  document.body.appendChild(t);
+  setTimeout(function(){t.classList.add('visible')},10);
+  setTimeout(function(){
+    t.classList.remove('visible');
+    setTimeout(function(){t.remove()},300);
+  },duration);
+}
+function jumpTo(id){
+  var el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.addEventListener('keydown',function(e){
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
+  if(e.key==='?'||(e.shiftKey&&e.key==='/')){
+    e.preventDefault();
+    toggleShortcuts();
+    return;
+  }
+  if(e.key==='Escape'){
+    var p=document.getElementById('shortcutsPanel');
+    if(p&&p.classList.contains('visible')){p.classList.remove('visible');return}
+    closeAllModals();
+    return;
+  }
+  if(e.key==='g'||e.key==='G'){
+    gPressed=true;
+    clearTimeout(gTimer);
+    gTimer=setTimeout(function(){gPressed=false},800);
+    return;
+  }
+  if(gPressed){
+    gPressed=false;
+    clearTimeout(gTimer);
+    var map={h:'hero',c:'charts',p:'pk-arena',f:'fortune',j:'jobs',m:'worldmap',r:'roadmap'};
+    if(map[e.key.toLowerCase()]){e.preventDefault();jumpTo(map[e.key.toLowerCase()])}
+    return;
+  }
+  if(e.key==='a'||e.key==='A'){
+    if(typeof openAiPanel==='function')openAiPanel();
+  }else if(e.key==='t'||e.key==='T'){
+    if(typeof toggleTheme==='function')toggleTheme();
+  }else if(e.key==='s'||e.key==='S'){
+    if(typeof openScoreModal==='function')openScoreModal();
+  }else if(e.key==='e'||e.key==='E'){
+    if(typeof exportReport==='function')exportReport();
+  }else if(e.key==='r'||e.key==='R'){
+    if(typeof pkRandom==='function')pkRandom();
+    showToast('🎲 随机 PK 已触发');
+  }else if(e.key==='ArrowUp'&&e.altKey){
+    e.preventDefault();
+    scrollToTop();
+  }
+});
+function closeAllModals(){
+  ['scoreModal','codeModal','chartModal'].forEach(function(id){
+    var m=document.getElementById(id);
+    if(m)m.style.display='none';
+  });
+  var p=document.getElementById('aiPanel');
+  if(p)p.classList.remove('open');
+}
+
+/* ========== URL 状态同步 ========== */
+function syncUrlToState(){
+  var hash=window.location.hash;
+  if(!hash)return;
+  var m=hash.match(/theme=(\w+)/);
+  if(m&&(m[1]==='light'||m[1]==='dark')&&document.body.getAttribute('data-theme')!==m[1]){
+    if(typeof toggleTheme==='function'){document.body.setAttribute('data-theme',m[1]);localStorage.setItem('theme',m[1]);var t=document.getElementById('themeToggle');if(t)t.textContent=m[1]==='light'?'☀️':'🌙'}
+  }
+  var filterMatch=hash.match(/filters=([\w,]+)/);
+  if(filterMatch&&window.activeFilters){
+    var selected=filterMatch[1].split(',');
+    document.querySelectorAll('.filter-tag').forEach(function(btn){
+      var fw=btn.getAttribute('data-fw');
+      if(selected.includes(fw))btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+    window.activeFilters=new Set(selected);
+    if(typeof updateCharts==='function')updateCharts();
+  }
+}
+window.addEventListener('hashchange',syncUrlToState);
+window.addEventListener('DOMContentLoaded',function(){
+  setTimeout(syncUrlToState,500);
+});
+
+/* ========== 复制代码到剪贴板（增强） ========== */
+function copyCode(text,btn){
+  navigator.clipboard.writeText(text).then(function(){
+    var orig=btn.textContent;
+    btn.textContent='✅ 已复制';
+    btn.style.background='rgba(16,185,129,0.3)';
+    setTimeout(function(){btn.textContent=orig;btn.style.background=''},1500);
+  });
+}
+
 /* ========== 框架数据（PK/运势/学习路径共用） ========== */
 var frameworkData={
   'React':{emoji:'⚛️',scores:{性能:85,生态:98,易学:75,就业:95,趋势:88,社区:96},salary:25,demand:95,trend:5,color:'#61dafb'},
@@ -2111,6 +2363,71 @@ function pkReset(){
   document.getElementById('pkSelectBlue').value='Vue';
   pkRender();
 }
+
+/* ========== 多框架雷达对比 ========== */
+var mcSelected=['React','Vue','Svelte'];
+var mcChart=null;
+function openMultiCompare(){
+  var modal=document.getElementById('multiCompareModal');
+  if(!modal)return;
+  modal.classList.add('visible');
+  renderMcTags();
+  renderMcChart();
+}
+function closeMultiCompare(){
+  var modal=document.getElementById('multiCompareModal');
+  if(modal)modal.classList.remove('visible');
+  if(mcChart){mcChart.dispose();mcChart=null}
+}
+function renderMcTags(){
+  var wrap=document.getElementById('multiCompareTags');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  Object.keys(frameworkData).forEach(function(fw){
+    var t=document.createElement('button');
+    t.type='button';
+    t.className='mc-tag'+(mcSelected.includes(fw)?' selected':'');
+    t.textContent=frameworkData[fw].emoji+' '+fw;
+    t.onclick=function(){
+      if(mcSelected.includes(fw)){
+        if(mcSelected.length>2)mcSelected=mcSelected.filter(function(x){return x!==fw});
+      }else{
+        if(mcSelected.length<6)mcSelected.push(fw);
+      }
+      renderMcTags();
+      renderMcChart();
+    };
+    wrap.appendChild(t);
+  });
+}
+function renderMcChart(){
+  var dom=document.getElementById('multiCompareChart');
+  if(!dom||typeof echarts==='undefined')return;
+  if(mcChart){mcChart.dispose();mcChart=null}
+  mcChart=echarts.init(dom,document.body.getAttribute('data-theme')==='light'?'light':null);
+  var indicators=[{name:'性能',max:100},{name:'生态',max:100},{name:'易学',max:100},{name:'就业',max:100},{name:'趋势',max:100},{name:'社区',max:100}];
+  var colors=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#06b6d4','#ec4899'];
+  var series=mcSelected.map(function(fw,i){
+    var d=frameworkData[fw];
+    return {
+      name:fw,
+      value:[d.scores.性能,d.scores.生态,d.scores.易学,d.scores.就业,d.scores.趋势,d.scores.社区],
+      areaStyle:{opacity:0.15},
+      lineStyle:{width:2},
+      itemStyle:{color:colors[i%colors.length]}
+    };
+  });
+  mcChart.setOption({
+    tooltip:{trigger:'item'},
+    legend:{bottom:0,textStyle:{color:getComputedStyle(document.body).getPropertyValue('--text-primary')||'#e2e8f0'}},
+    radar:{indicator:indicators,shape:'polygon',splitNumber:5,axisName:{color:getComputedStyle(document.body).getPropertyValue('--text-secondary')||'#94a3b8'}},
+    series:[{type:'radar',data:series,symbolSize:6}]
+  });
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var btn=document.getElementById('multiCompareModal');
+  if(btn)btn.addEventListener('click',function(e){if(e.target===this)closeMultiCompare()});
+});
 
 /* ========== 今日运势 ========== */
 var fortunePool=[
