@@ -3,3 +3,6 @@ agent.md
 server.js
 deploy.ps1
 scripts/
+.specs/
+.specify/
+specs/
