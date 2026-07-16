@@ -1,0 +1,3 @@
+# 此目录存放功能规范文档
+# 每个功能一个子目录：specs/NNN-feature-name/
+# 包含：spec.md, plan.md, tasks.md

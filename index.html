@@ -1775,11 +1775,43 @@ function toggleTheme(){
   });
 }
 
-// 初始化主题
-if(localStorage.getItem('techinsight_theme')==='light'){
+// 初始化主题（优先级：localStorage > 系统偏好 > 默认亮色）
+var savedTheme=localStorage.getItem('techinsight_theme');
+if(savedTheme){
+  console.info('[Theme] 分支1: localStorage 有值 →',savedTheme);
+  currentTheme=savedTheme;
+}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches){
+  console.info('[Theme] 分支2: matchMedia 检测到系统暗色 → dark');
+  currentTheme='dark';
+}else{
+  console.info('[Theme] 分支3: 无偏好 + 系统非暗色 → light (默认)');
   currentTheme='light';
-  document.documentElement.setAttribute('data-theme','light');
-  document.getElementById('themeToggle').textContent='☀️';
+}
+console.info('[Theme] 初始化完成 →',currentTheme);
+document.documentElement.setAttribute('data-theme',currentTheme);
+var themeBtn=document.getElementById('themeToggle');
+if(themeBtn)themeBtn.textContent=currentTheme==='dark'?'🌙':'☀️';
+
+// 系统主题变化时实时响应（仅当用户未手动选择时）
+if(window.matchMedia){
+  var darkQuery=window.matchMedia('(prefers-color-scheme:dark)');
+  darkQuery.addEventListener('change',function(e){
+    console.info('[Theme] matchMedia change 触发 → matches:',e.matches);
+    if(localStorage.getItem('techinsight_theme')){
+      console.info('[Theme] 用户已有手动偏好，忽略系统变化 →',localStorage.getItem('techinsight_theme'));
+      return;
+    }
+    currentTheme=e.matches?'dark':'light';
+    console.info('[Theme] 跟随系统切换 →',currentTheme);
+    document.documentElement.setAttribute('data-theme',currentTheme);
+    var btn=document.getElementById('themeToggle');
+    if(btn)btn.textContent=currentTheme==='dark'?'🌙':'☀️';
+    var bgColor=currentTheme==='dark'?'transparent':'#ffffff';
+    Object.keys(chartInstances).forEach(function(key){
+      if(chartInstances[key])chartInstances[key].setOption({backgroundColor:bgColor});
+    });
+  });
+  console.info('[Theme] matchMedia change 监听已注册');
 }
 
 /* ========== 图表详情模态框 ========== */
